@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "opinions_categories",
+  "info": {
+    "name": "opinions_category",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "category_name": {
+      "type": "string"
+    },
+    "average_rating": {
+      "type": "string"
+    },
+    "opinions": {
+      "collection": "opinions",
+      "via": "opinions_category"
+    },
+    "lecturer": {
+      "via": "opinions_categories",
+      "model": "lecturer"
+    }
+  }
+}
