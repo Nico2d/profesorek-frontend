@@ -33,26 +33,33 @@ const StyledContainer = styled.div`
   margin-bottom: 1rem;
 `
 
-const Lecturer = (data) => {
+const StyledOpinionWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+`
+
+const Lecturer = data => {
   const onClickHandler = () => {
-    console.log("open questions", data);
+    console.log("open questions")
   }
 
   return (
     <StyledContainer>
       <StyledWrapperLecturer>
-      <Header>{data.data.Titles} {data.data.Name} {data.data.Surname}</Header>
-        <p> {data.data.UniversityName} - {data.data.UniversityFaculty}</p>
-        {/* <table>
-          <tr>
-            <th>Wykład</th>
-            <td>4.5</td>
-          </tr>
-          <tr>
-            <th>Laborki</th>
-            <td>4.9</td>
-          </tr>
-        </table> */}
+        <Header>
+          {data.data.Titles} {data.data.Name} {data.data.Surname}
+        </Header>
+        <p>
+          {data.data.UniversityName} - {data.data.UniversityFaculty}
+        </p>
+
+        <StyledOpinionWrapper>
+          {data.data.opinions_categories.map((category, index) => (
+            <div key={index}>
+              {category.category_name}: {category.average_rating}
+            </div>
+          ))}
+        </StyledOpinionWrapper>
       </StyledWrapperLecturer>
 
       <StyledEditButton onClick={onClickHandler}>
@@ -63,4 +70,3 @@ const Lecturer = (data) => {
 }
 
 export default Lecturer
-

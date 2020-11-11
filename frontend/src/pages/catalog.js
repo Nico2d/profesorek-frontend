@@ -35,7 +35,7 @@ const Catalog = ({ data }) => {
     <Layout>
       <StyledContainer>
         <Sidebar
-          setSearch={query => setSearch(query)}
+          setSearch={setSearch}
           universityList={universityList}
           activeUniversityList={activeUniversityList}
           setActiveUniversityList={setActiveUniversityList}
@@ -75,6 +75,10 @@ export const query = graphql`
           Titles
           UniversityFaculty
           UniversityName
+          opinions_categories {
+            category_name
+            average_rating
+          }
         }
       }
     }

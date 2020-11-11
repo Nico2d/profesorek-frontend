@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "opinions",
   "info": {
-    "name": "opinions"
+    "name": "opinions",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -13,25 +14,28 @@
     "date_added": {
       "type": "date"
     },
-    "question_1": {
-      "type": "string"
-    },
-    "question_2": {
-      "type": "string"
-    },
-    "question_3": {
-      "type": "string"
-    },
-    "question_4": {
-      "type": "string"
-    },
     "opinions_category": {
-      "via": "opinions",
-      "model": "opinions-category"
+      "model": "opinions-category",
+      "via": "opinions"
     },
     "student": {
-      "via": "opinions",
-      "model": "student"
+      "model": "student",
+      "via": "opinions"
+    },
+    "question_1": {
+      "type": "integer"
+    },
+    "question_2": {
+      "type": "integer"
+    },
+    "question_3": {
+      "type": "integer"
+    },
+    "question_4": {
+      "type": "integer"
+    },
+    "question_5": {
+      "type": "integer"
     }
   }
 }

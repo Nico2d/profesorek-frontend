@@ -18,8 +18,8 @@
       "type": "string"
     },
     "opinions": {
-      "collection": "opinions",
-      "via": "opinions_category"
+      "via": "opinions_category",
+      "collection": "opinions"
     },
     "lecturer": {
       "via": "opinions_categories",
