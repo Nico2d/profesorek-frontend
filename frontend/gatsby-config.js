@@ -6,5 +6,17 @@
 
 module.exports = {
   /* Your site config here */
-  plugins: [],
+  plugins: [
+    {
+      resolve: 'gatsby-source-strapi',
+      options: {
+        apiURL: 'http://localhost:5000',
+        contentTypes: [
+          'Lecturers',
+          'Użytkownicy'
+        ],
+        queryLimit: 1000,
+      },
+    },
+  ],
 }
