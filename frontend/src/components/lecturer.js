@@ -6,8 +6,8 @@ const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.colors.primary};
   padding: 1rem;
   color: white;
-  width: 500px;
   margin-right: 1rem;
+  flex: 1;
 `
 const Header = styled.h4`
   font-size: 1.5rem;

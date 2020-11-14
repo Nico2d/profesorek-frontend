@@ -4,6 +4,10 @@ import Lecturer from "../components/lecturer"
 import Layout from "../layout/layout"
 import Sidebar from "../components/sidebar"
 import { graphql } from "gatsby"
+import { AiOutlineEyeInvisible } from "react-icons/ai"
+import AddLecturer from "../components/add-lecturer"
+
+const buttonSize = 70
 
 const StyledContainer = styled.div`
   display: flex;
@@ -15,10 +19,29 @@ const StyledHeader = styled.h2`
   font-size: 2rem;
   font-weight: bold;
 `
+//TO DO: zrobić component button po którym bedzie tutaj dziedziczenie
+const StyledButton = styled.div`
+  height: ${buttonSize}px;
+  width: ${buttonSize}px;
+  background: ${({ theme }) => theme.colors.primary};
+  font-size: ${buttonSize * 0.7}px;
+  color: ${({ theme }) => theme.colors.white};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const LecturerWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+`
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
 
 const Catalog = ({ data }) => {
   const [search, setSearch] = useState("")
-
   const universityList = Array.from(
     new Set(
       data.allStrapiLecturers.edges.map(
@@ -33,6 +56,12 @@ const Catalog = ({ data }) => {
 
   return (
     <Layout>
+      <StyledButtonWrapper>
+        <StyledButton>
+          <AiOutlineEyeInvisible />
+        </StyledButton>
+      </StyledButtonWrapper>
+
       <StyledContainer>
         <Sidebar
           setSearch={setSearch}
@@ -42,20 +71,23 @@ const Catalog = ({ data }) => {
         />
         <Main>
           <StyledHeader>Lista prowadzących</StyledHeader>
-          {data.allStrapiLecturers.edges
-            .filter(item => {
-              return activeUniversityList.includes(item.node.UniversityName)
-            })
-            .filter(item => {
-              return (
-                item.node.Name.toLowerCase().includes(search) ||
-                item.node.Surname.toLowerCase().includes(search) ||
-                item.node.Titles.toLowerCase().includes(search)
-              )
-            })
-            .map(document => (
-              <Lecturer key={document.node.id} data={document.node} />
-            ))}
+          <LecturerWrapper>
+            {data.allStrapiLecturers.edges
+              .filter(item => {
+                return activeUniversityList.includes(item.node.UniversityName)
+              })
+              .filter(item => {
+                return (
+                  item.node.Name.toLowerCase().includes(search) ||
+                  item.node.Surname.toLowerCase().includes(search) ||
+                  item.node.Titles.toLowerCase().includes(search)
+                )
+              })
+              .map(document => (
+                <Lecturer key={document.node.id} data={document.node} />
+              ))}
+          </LecturerWrapper>
+          <AddLecturer></AddLecturer>
         </Main>
       </StyledContainer>
     </Layout>
