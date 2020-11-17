@@ -14,7 +14,19 @@ module.exports = {
       resolve: `gatsby-source-strapi`,
       options: {
         apiURL: `http://localhost:1337`,
-        contentTypes: [`lecturers`, 'opinions'],
+        contentTypes: [`lecturers`, "opinions"],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-styled-components`,
+      options: {
+        // Add any options here
+      },
+    },
+    {
+      resolve: "gatsby-plugin-apollo",
+      options: {
+        uri: "http://localhost:1337/graphql",
       },
     },
   ],

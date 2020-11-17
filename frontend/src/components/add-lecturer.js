@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { FaUserPlus } from "react-icons/fa"
 import Popup from "../components/popup"
 import FormInput from "../components/form-input"
+import { gql, useMutation } from "@apollo/client"
 
 const StyledContainer = styled.div`
   display: flex;
@@ -32,13 +33,51 @@ const StyledButton = styled.input`
   font-weight: bold;
   margin: 1rem auto;
 
-  &:active, &:focus{
+  &:active,
+  &:focus {
     border: none;
+  }
+`
+
+const ADD_DATA = gql`
+  mutation AddTeacher(
+    $titles: String
+    $name: String
+    $surname: String
+    $university: String
+    $faculty: String
+  ) {
+    createLecturer(
+      input: {
+        data: {
+          Titles: $titles
+          Name: $name
+          Surname: $surname
+          UniversityName: $university
+          UniversityFaculty: $faculty
+        }
+      }
+    ) {
+      lecturer {
+        Titles
+        Name
+        Surname
+        UniversityName
+        UniversityFaculty
+      }
+    }
   }
 `
 
 const AddLecturer = () => {
   const [isPopup, setIsPopup] = useState(false)
+  const [addData, { data }] = useMutation(ADD_DATA)
+
+  const [titles, setTitles] = useState("")
+  const [name, setName] = useState("")
+  const [surname, setSurname] = useState("")
+  const [university, setUniversity] = useState("")
+  const [universityFaculty, setUniversityFaculty] = useState("")
 
   return (
     <>
@@ -48,16 +87,58 @@ const AddLecturer = () => {
       </StyledContainer>
 
       <Popup isOpen={isPopup} onClose={setIsPopup} title="Dodaj prowadzącego">
-        <form style={{ marginTop: "3rem" }}>
+        <form
+          style={{ marginTop: "3rem" }}
+          onSubmit={e => {
+            e.preventDefault()
+
+            addData({
+              variables: {
+                titles: titles,
+                name: name,
+                surname: surname,
+                university: university,
+                faculty: universityFaculty,
+              },
+            })
+
+            setIsPopup(false)
+          }}
+        >
           <StyledWrapper>
-            <FormInput title="Tytuły naukowe" width={200} />
-            <FormInput title="Imię" width={250} />
-            <FormInput title="Naziwsko" width={250} />
+            <FormInput
+              value={titles}
+              onInput={setTitles}
+              title="Tytuły naukowe"
+              width={200}
+            />
+            <FormInput
+              value={name}
+              onInput={setName}
+              title="Imię"
+              width={250}
+            />
+            <FormInput
+              value={surname}
+              onInput={setSurname}
+              title="Naziwsko"
+              width={250}
+            />
           </StyledWrapper>
 
           <StyledWrapper>
-            <FormInput title="Uczelnia" width={400} />
-            <FormInput title="Wydział" width={300} />
+            <FormInput
+              value={university}
+              onInput={setUniversity}
+              title="Uczelnia"
+              width={400}
+            />
+            <FormInput
+              value={universityFaculty}
+              onInput={setUniversityFaculty}
+              title="Wydział"
+              width={300}
+            />
           </StyledWrapper>
 
           <StyledButton type="submit" value="Dodaj" />
