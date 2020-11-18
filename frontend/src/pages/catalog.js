@@ -41,13 +41,12 @@ const StyledButtonWrapper = styled.div`
 `
 
 const Catalog = ({ data }) => {
+  const [lecturerList, setLecturerList] = useState(
+    data.allStrapiLecturers.edges
+  )
   const [search, setSearch] = useState("")
   const universityList = Array.from(
-    new Set(
-      data.allStrapiLecturers.edges.map(
-        document => document.node.UniversityName
-      )
-    )
+    new Set(lecturerList.map(document => document.node.UniversityName))
   )
 
   const [activeUniversityList, setActiveUniversityList] = useState(
@@ -72,10 +71,10 @@ const Catalog = ({ data }) => {
         <Main>
           <StyledHeader>Lista prowadzących</StyledHeader>
           <LecturerWrapper>
-            {data.allStrapiLecturers.edges
-              .filter(item => {
-                return activeUniversityList.includes(item.node.UniversityName)
-              })
+            {lecturerList
+              // .filter(item => {
+              //   return activeUniversityList.includes(item.node.UniversityName)
+              // })
               .filter(item => {
                 return (
                   item.node.Name.toLowerCase().includes(search) ||
@@ -83,11 +82,15 @@ const Catalog = ({ data }) => {
                   item.node.Titles.toLowerCase().includes(search)
                 )
               })
-              .map(document => (
-                <Lecturer key={document.node.id} data={document.node} />
+              .map((document, index) => (
+                <Lecturer key={index} data={document.node} />
               ))}
           </LecturerWrapper>
-          <AddLecturer></AddLecturer>
+          <AddLecturer
+            callback={callback =>
+              setLecturerList(prevState => [...prevState, callback])
+            }
+          ></AddLecturer>
         </Main>
       </StyledContainer>
     </Layout>

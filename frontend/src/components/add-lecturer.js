@@ -69,8 +69,8 @@ const ADD_DATA = gql`
   }
 `
 
-const AddLecturer = () => {
-  const [isPopup, setIsPopup] = useState(false)
+const AddLecturer = ({ callback }) => {
+  const [openPopup, isOpenPopup] = useState(false)
   const [addData, { data }] = useMutation(ADD_DATA)
 
   const [titles, setTitles] = useState("")
@@ -79,32 +79,46 @@ const AddLecturer = () => {
   const [university, setUniversity] = useState("")
   const [universityFaculty, setUniversityFaculty] = useState("")
 
+  const onSubmitHandler = e => {
+    e.preventDefault()
+
+    addData({
+      variables: {
+        titles: titles,
+        name: name,
+        surname: surname,
+        university: university,
+        faculty: universityFaculty,
+      },
+    })
+
+    isOpenPopup(false)
+
+    callback({
+      node: {
+        Titles: titles,
+        Name: name,
+        Surname: surname,
+        UniversityFaculty: university,
+        UniversityName: universityFaculty,
+        opinions_categories: [],
+      },
+    })
+  }
+
   return (
     <>
-      <StyledContainer onClick={() => setIsPopup(true)}>
+      <StyledContainer onClick={() => isOpenPopup(true)}>
         <FaUserPlus />
         &nbsp;Dodaj prowadzacego
       </StyledContainer>
 
-      <Popup isOpen={isPopup} onClose={setIsPopup} title="Dodaj prowadzącego">
-        <form
-          style={{ marginTop: "3rem" }}
-          onSubmit={e => {
-            e.preventDefault()
-
-            addData({
-              variables: {
-                titles: titles,
-                name: name,
-                surname: surname,
-                university: university,
-                faculty: universityFaculty,
-              },
-            })
-
-            setIsPopup(false)
-          }}
-        >
+      <Popup
+        isOpen={openPopup}
+        onClose={isOpenPopup}
+        title="Dodaj prowadzącego"
+      >
+        <form style={{ marginTop: "3rem" }} onSubmit={onSubmitHandler}>
           <StyledWrapper>
             <FormInput
               value={titles}

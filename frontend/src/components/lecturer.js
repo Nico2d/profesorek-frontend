@@ -39,6 +39,7 @@ const StyledOpinionWrapper = styled.div`
 `
 
 const Lecturer = data => {
+  console.log(data)
   const onClickHandler = () => {
     console.log("open questions")
   }
