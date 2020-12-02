@@ -36,6 +36,7 @@ const StyledWrapper = styled.div`
   position: relative;
   margin-bottom: 45px;
 `
+
 const StyledBar = styled.span`
   position: relative;
   display: block;
@@ -48,7 +49,7 @@ const StyledBar = styled.span`
     width: 0;
     bottom: 1px;
     position: absolute;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.secondary};
     transition: 0.2s ease all;
   }
 
@@ -67,6 +68,9 @@ const StyledInput = styled.input`
   width: ${props => props.width}px;
   border: none;
   border-bottom: 1px solid #757575;
+  background: transparent;
+  color: ${({ theme }) => theme.fontColor};
+  font-size: ${({ theme }) => theme.fontSize}px;
 
   &:focus {
     outline: none;
@@ -74,9 +78,10 @@ const StyledInput = styled.input`
 
   &:focus ~ ${StyledLabel}, &:valid ~ ${StyledLabel} {
     top: -20px;
-    font-size: 14px;
-    color: ${({ theme }) => theme.colors.primary};
-    font-weight: bold;
+    /* font-size: 14px; */
+    
+    color: ${({ theme }) => theme.secondary};
+    /* font-weight: bold; */
   }
 
   &:focus ~ ${StyledBar}::before, &:focus ~ ${StyledBar}::after {
@@ -96,6 +101,7 @@ const FormInput = ({ title, width, onInput }) => {
         required
         width={width}
         onInput={e => onInput(e.target.value)}
+        aria-label={title}
       />
       <StyledHighlight></StyledHighlight>
       <StyledBar width={width}></StyledBar>

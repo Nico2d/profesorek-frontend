@@ -10,8 +10,8 @@ const StyledContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 150px;
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.yingYang};
   font-size: 3rem;
   cursor: pointer;
 `
@@ -23,8 +23,8 @@ const StyledWrapper = styled.div`
 
 //TO DO: zrobić component button po którym bedzie tutaj dziedziczenie
 const StyledButton = styled.input`
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.yingYang};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,6 +32,7 @@ const StyledButton = styled.input`
   border: none;
   font-weight: bold;
   margin: 1rem auto;
+  cursor: pointer;
 
   &:active,
   &:focus {
@@ -71,7 +72,7 @@ const ADD_DATA = gql`
 
 const AddLecturer = ({ callback }) => {
   const [openPopup, isOpenPopup] = useState(false)
-  const [addData, { data }] = useMutation(ADD_DATA)
+  const [addData] = useMutation(ADD_DATA)
 
   const [titles, setTitles] = useState("")
   const [name, setName] = useState("")

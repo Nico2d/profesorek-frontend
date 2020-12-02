@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { AiOutlineCloseSquare } from "react-icons/ai"
+import { motion } from "framer-motion"
 
 const StyledIcon = styled.div`
   float: right;
@@ -20,17 +21,22 @@ const StyledHeader = styled.div`
 `
 const StyledPopup = styled.div`
   position: absolute;
+  position: fixed;
+  width: 100%;
+  height: 100%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  color: black;
+  background: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.fontColor};
   width: 800px;
   height: 500px;
   padding: 2rem;
   box-shadow: 0 0px 2.2px rgba(0, 0, 0, 0.068), 0 0px 5.3px rgba(0, 0, 0, 0.096),
     0 0px 10px rgba(0, 0, 0, 0.12), 0 0px 17.9px rgba(0, 0, 0, 0.144),
     0 0px 33.4px rgba(0, 0, 0, 0.172), 0 0px 80px rgba(0, 0, 0, 0.24);
+  border: 1px solid ${({ theme }) => theme.fontColor};
+  font-size: ${({ theme }) => theme.fontSize}px;
+  transition: all 0.25s linear;
 `
 
 const StyledContentWrapper = styled.div`
@@ -40,7 +46,12 @@ const StyledContentWrapper = styled.div`
 const Popup = ({ children, title, isOpen, onClose }) => {
   return (
     isOpen === true && (
-      <StyledPopup>
+      <StyledPopup
+        as={motion.div}
+        initial={{ scale: 0.5, y: "-50%", x: "-50%" }}
+        animate={{ scale: 1 }}
+        transition={{ type: "tween", duration: 0.25 }}
+      >
         <StyledHeader>
           <StyledHeading>{title}</StyledHeading>
           <StyledIcon

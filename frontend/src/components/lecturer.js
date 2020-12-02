@@ -3,9 +3,9 @@ import styled from "styled-components"
 import { RiPencilFill } from "react-icons/ri"
 
 const StyledWrapperLecturer = styled.div`
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.primary};
   padding: 1rem;
-  color: white;
+  color: ${({ theme }) => theme.yingYang};
   margin-right: 1rem;
   flex: 1;
 `
@@ -18,8 +18,8 @@ const StyledEditButton = styled.div`
   justify-content: center;
   align-items: center;
   width: 150px;
-  background: ${({ theme }) => theme.colors.secondary};
-  color: white;
+  background: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.yingYang};
   font-size: 5rem;
 
   :hover {
@@ -29,17 +29,20 @@ const StyledEditButton = styled.div`
 const StyledContainer = styled.div`
   display: flex;
   flex-flow: row;
-  height: 150px;
+  min-height: 150px;
   margin-bottom: 1rem;
 `
 
 const StyledOpinionWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
+  div {
+    white-space: "nowrap";
+  }
 `
 
 const Lecturer = data => {
-  console.log(data)
   const onClickHandler = () => {
     console.log("open questions")
   }
@@ -48,16 +51,14 @@ const Lecturer = data => {
     <StyledContainer>
       <StyledWrapperLecturer>
         <Header>
-          {data.data.Titles} {data.data.Name} {data.data.Surname}
+          {`${data.data.Titles} ${data.data.Name} ${data.data.Surname}`}
         </Header>
-        <p>
-          {data.data.UniversityName} - {data.data.UniversityFaculty}
-        </p>
+        <p>{`${data.data.UniversityName} - ${data.data.UniversityFaculty}`}</p>
 
         <StyledOpinionWrapper>
           {data.data.opinions_categories.map((category, index) => (
             <div key={index}>
-              {category.category_name}: {category.average_rating}
+              {`${category.category_name}: ${category.average_rating}`}
             </div>
           ))}
         </StyledOpinionWrapper>

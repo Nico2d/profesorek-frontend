@@ -1,13 +1,91 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Lecturer from "../components/lecturer"
 import Layout from "../layout/layout"
 import Sidebar from "../components/sidebar"
-import { graphql } from "gatsby"
-import { AiOutlineEyeInvisible } from "react-icons/ai"
 import AddLecturer from "../components/add-lecturer"
+import { gql, useQuery } from "@apollo/client"
 
-const buttonSize = 70
+const Catalog = () => {
+  const { loading, error, data } = useQuery(GET_LECTURERS)
+  const [search, setSearch] = useState("")
+  const [universityList, setUniversityList] = useState([])
+  const [activeUniversityList, setActiveUniversityList] = useState([]) //dospiać tutaj nowo dodany element (universytet)
+  const [lecturerList, setLecturerList] = useState([])
+
+  useEffect(() => {
+    const onCompleted = data => {
+      const unicalList = Array.from(
+        new Set(data.lecturers.map(item => item.UniversityName))
+      )
+      setLecturerList(data.lecturers)
+      setUniversityList(unicalList)
+      setActiveUniversityList(unicalList)
+    }
+    const onError = error => {
+      console.log("onError")
+    }
+    if (onCompleted || onError) {
+      if (onCompleted && !loading && !error) {
+        onCompleted(data)
+      } else if (onError && !loading && error) {
+        onError(error)
+      }
+    }
+  }, [loading, error, data])
+
+  if (loading) return <p>Loading...</p>
+  if (error) return `Error! ${error}`
+
+  const AddNewLecturer = ({ node }) => {
+    setLecturerList(prevState => [...prevState, node])
+
+    if (universityList.indexOf(node.UniversityName) === -1) {
+      setUniversityList(prev => [...universityList, node.UniversityName])
+      setActiveUniversityList(prev => [
+        ...activeUniversityList,
+        node.UniversityName,
+      ])
+    }
+  }
+
+  return (
+    <Layout>
+      <StyledContainer>
+        <Sidebar
+          setSearch={setSearch}
+          universityList={universityList}
+          activeUniversityList={activeUniversityList}
+          getActiveUniversityList={setActiveUniversityList}
+        />
+        <Main>
+          <StyledHeader>Lista prowadzących</StyledHeader>
+          <LecturerWrapper>
+            {lecturerList
+              .filter(item => {
+                return activeUniversityList.includes(item.UniversityName)
+              })
+              .filter(item => {
+                return (
+                  item.Name.toLowerCase().includes(search) ||
+                  item.Surname.toLowerCase().includes(search) ||
+                  item.Titles.toLowerCase().includes(search)
+                )
+              })
+              .map((item, index) => (
+                <Lecturer key={index} data={item} />
+              ))}
+          </LecturerWrapper>
+          <AddLecturer
+            callback={callback => AddNewLecturer(callback)}
+          ></AddLecturer>
+        </Main>
+      </StyledContainer>
+    </Layout>
+  )
+}
+
+export default Catalog
 
 const StyledContainer = styled.div`
   display: flex;
@@ -19,102 +97,24 @@ const StyledHeader = styled.h2`
   font-size: 2rem;
   font-weight: bold;
 `
-//TO DO: zrobić component button po którym bedzie tutaj dziedziczenie
-const StyledButton = styled.div`
-  height: ${buttonSize}px;
-  width: ${buttonSize}px;
-  background: ${({ theme }) => theme.colors.primary};
-  font-size: ${buttonSize * 0.7}px;
-  color: ${({ theme }) => theme.colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
 
 const LecturerWrapper = styled.div`
   display: flex;
   flex-flow: column;
 `
-const StyledButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`
 
-const Catalog = ({ data }) => {
-  const [lecturerList, setLecturerList] = useState(
-    data.allStrapiLecturers.edges
-  )
-  const [search, setSearch] = useState("")
-  const universityList = Array.from(
-    new Set(lecturerList.map(document => document.node.UniversityName))
-  )
-
-  const [activeUniversityList, setActiveUniversityList] = useState(
-    universityList
-  )
-
-  return (
-    <Layout>
-      <StyledButtonWrapper>
-        <StyledButton>
-          <AiOutlineEyeInvisible />
-        </StyledButton>
-      </StyledButtonWrapper>
-
-      <StyledContainer>
-        <Sidebar
-          setSearch={setSearch}
-          universityList={universityList}
-          activeUniversityList={activeUniversityList}
-          setActiveUniversityList={setActiveUniversityList}
-        />
-        <Main>
-          <StyledHeader>Lista prowadzących</StyledHeader>
-          <LecturerWrapper>
-            {lecturerList
-              // .filter(item => {
-              //   return activeUniversityList.includes(item.node.UniversityName)
-              // })
-              .filter(item => {
-                return (
-                  item.node.Name.toLowerCase().includes(search) ||
-                  item.node.Surname.toLowerCase().includes(search) ||
-                  item.node.Titles.toLowerCase().includes(search)
-                )
-              })
-              .map((document, index) => (
-                <Lecturer key={index} data={document.node} />
-              ))}
-          </LecturerWrapper>
-          <AddLecturer
-            callback={callback =>
-              setLecturerList(prevState => [...prevState, callback])
-            }
-          ></AddLecturer>
-        </Main>
-      </StyledContainer>
-    </Layout>
-  )
-}
-
-export default Catalog
-
-export const query = graphql`
-  query {
-    allStrapiLecturers {
-      edges {
-        node {
-          id
-          Name
-          Surname
-          Titles
-          UniversityFaculty
-          UniversityName
-          opinions_categories {
-            category_name
-            average_rating
-          }
-        }
+const GET_LECTURERS = gql`
+  query getLecturers {
+    lecturers {
+      Name
+      Name
+      Surname
+      Titles
+      UniversityFaculty
+      UniversityName
+      opinions_categories {
+        category_name
+        average_rating
       }
     }
   }
