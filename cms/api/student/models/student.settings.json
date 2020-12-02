@@ -18,8 +18,8 @@
       "type": "date"
     },
     "opinions": {
-      "collection": "opinions",
-      "via": "student"
+      "via": "student",
+      "collection": "opinions"
     }
   }
 }
