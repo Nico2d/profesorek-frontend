@@ -25,6 +25,10 @@
     },
     "Titles": {
       "type": "string"
+    },
+    "opinions_categories": {
+      "collection": "opinions-category",
+      "via": "lecturer"
     }
   }
 }
