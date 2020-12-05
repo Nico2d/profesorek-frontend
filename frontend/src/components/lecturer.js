@@ -6,7 +6,6 @@ const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.primary};
   padding: 1rem;
   color: ${({ theme }) => theme.whiteToBlack};
-  margin-right: 1rem;
   flex: 1;
 `
 const Header = styled.h4`
@@ -21,6 +20,7 @@ const StyledEditButton = styled.div`
   background: ${({ theme }) => theme.secondary};
   color: ${({ theme }) => theme.whiteToBlack};
   font-size: 5rem;
+  margin-left: 1rem;
 
   :hover {
     cursor: pointer;
@@ -64,9 +64,11 @@ const Lecturer = data => {
         </StyledOpinionWrapper>
       </StyledWrapperLecturer>
 
-      <StyledEditButton onClick={onClickHandler}>
-        <RiPencilFill />
-      </StyledEditButton>
+      {localStorage.getItem("userName") != null && (
+        <StyledEditButton onClick={onClickHandler}>
+          <RiPencilFill />
+        </StyledEditButton>
+      )}
     </StyledContainer>
   )
 }

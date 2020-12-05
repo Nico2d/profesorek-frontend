@@ -58,8 +58,12 @@ const Catalog = () => {
           activeUniversityList={activeUniversityList}
           getActiveUniversityList={setActiveUniversityList}
         />
-        <Main>
-          <StyledHeader>Lista prowadzących</StyledHeader>
+        <StyledMainContent>
+          <StyledHeader>
+            <StyledHeading>Lista prowadzących</StyledHeading>
+            {localStorage.getItem("userName") == null &&
+              `Zaloguj sie aby dodać opinie`}
+          </StyledHeader>
           <LecturerWrapper>
             {lecturerList
               .filter(item => {
@@ -76,10 +80,12 @@ const Catalog = () => {
                 <Lecturer key={index} data={item} />
               ))}
           </LecturerWrapper>
-          <AddLecturer
-            callback={callback => AddNewLecturer(callback)}
-          ></AddLecturer>
-        </Main>
+          {localStorage.getItem("userName") != null && (
+            <AddLecturer
+              callback={callback => AddNewLecturer(callback)}
+            ></AddLecturer>
+          )}
+        </StyledMainContent>
       </StyledContainer>
     </Layout>
   )
@@ -91,12 +97,18 @@ const StyledContainer = styled.div`
   margin-top: 4rem;
   display: flex;
 `
-const Main = styled.div`
+const StyledMainContent = styled.div`
   flex-grow: 1;
 `
-const StyledHeader = styled.h2`
+
+const StyledHeader = styled.div`
+  margin-bottom: 2rem;
+`
+
+const StyledHeading = styled.h2`
   font-size: 2rem;
   font-weight: bold;
+  margin-bottom: 0;
 `
 
 const LecturerWrapper = styled.div`

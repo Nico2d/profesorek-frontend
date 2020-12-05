@@ -1,24 +1,23 @@
-import React, { useState } from "react"
+import React from "react"
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components"
 import { lightTheme, darkTheme } from "../utils/theme"
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai"
 import { Link } from "gatsby"
 import { FaDoorOpen } from "react-icons/fa"
+import { useDarkMode } from "../components/useDarkMode"
+import ThemeToggler from "../components/themeToggler"
 
 const Layout = ({ children }) => {
-  const [theme, setTheme] = useState("light")
-
-  const themeToggler = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light")
-  }
+  const [theme, themeToggler, mountedComponent] = useDarkMode()
+  const themeMode = theme === "light" ? lightTheme : darkTheme
 
   const logout = () => {
     localStorage.removeItem("userName")
-    window.location.reload(false)
+    window.location.reload()
   }
 
+  if (!mountedComponent) return <div />
   return (
-    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+    <ThemeProvider theme={themeMode}>
       <GlobalStyle />
 
       <StyledContainer>
@@ -29,9 +28,7 @@ const Layout = ({ children }) => {
           </StyledWelcome>
 
           <div style={{ display: "flex" }}>
-            <StyledIconButton onClick={themeToggler}>
-              {theme === "light" ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-            </StyledIconButton>
+            <ThemeToggler theme={theme} toggleTheme={themeToggler} />
 
             {localStorage.getItem("userName") != null && (
               <StyledIconButton onClick={logout}>
@@ -56,9 +53,10 @@ const StyledWelcome = styled.div`
   align-items: center;
   display: flex;
   height: inherit;
+  color: ${({ theme }) => theme.blackToYellow};
 `
 
-const StyledIconButton = styled.div`
+export const StyledIconButton = styled.div`
   height: ${buttonSize}px;
   width: ${buttonSize}px;
   background: ${({ theme }) => theme.primary};
