@@ -22,7 +22,7 @@ const IndexPage = () => (
 )
 export default IndexPage
 
-const StyleTitleWrapper = styled.div` 
+const StyleTitleWrapper = styled.div`
   float: left;
   width: 50%;
 
@@ -57,8 +57,8 @@ const StyledWrapper = styled.div`
   &::before {
     background: linear-gradient(
       115deg,
-      ${({ theme }) => theme.whiteToBlack} 50%,
-      ${({ theme }) => theme.primaryToWhite} 50%
+      ${({ theme }) => theme.whiteToBlack} 49%,
+      ${({ theme }) => theme.primaryToWhite} 0%
     );
     z-index: -2;
   }

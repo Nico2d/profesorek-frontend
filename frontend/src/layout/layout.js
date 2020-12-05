@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components"
 import { lightTheme, darkTheme } from "../utils/theme"
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai"
+import { Link } from "gatsby"
+import { FaDoorOpen } from "react-icons/fa"
 
 const Layout = ({ children }) => {
   const [theme, setTheme] = useState("light")
@@ -10,17 +12,33 @@ const Layout = ({ children }) => {
     theme === "light" ? setTheme("dark") : setTheme("light")
   }
 
+  const logout = () => {
+    localStorage.removeItem("userName")
+    window.location.reload(false)
+  }
+
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyle />
 
       <StyledContainer>
         <StyledNavbar>
-          <StyledButtonWrapper>
-            <StyledChangeMode onClick={themeToggler}>
+          <StyledWelcome as={Link} to="/">
+            {localStorage.getItem("userName") != null &&
+              `Witaj ${localStorage.getItem("userName")}!`}
+          </StyledWelcome>
+
+          <div style={{ display: "flex" }}>
+            <StyledIconButton onClick={themeToggler}>
               {theme === "light" ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-            </StyledChangeMode>
-          </StyledButtonWrapper>
+            </StyledIconButton>
+
+            {localStorage.getItem("userName") != null && (
+              <StyledIconButton onClick={logout}>
+                <FaDoorOpen />
+              </StyledIconButton>
+            )}
+          </div>
         </StyledNavbar>
 
         {children}
@@ -33,7 +51,14 @@ export default Layout
 
 const buttonSize = 70
 
-const StyledChangeMode = styled.div`
+const StyledWelcome = styled.div`
+  text-align: center;
+  align-items: center;
+  display: flex;
+  height: inherit;
+`
+
+const StyledIconButton = styled.div`
   height: ${buttonSize}px;
   width: ${buttonSize}px;
   background: ${({ theme }) => theme.primary};
@@ -42,6 +67,8 @@ const StyledChangeMode = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  margin-left: 1rem;
 `
 
 const StyledNavbar = styled.div`
@@ -49,13 +76,9 @@ const StyledNavbar = styled.div`
   width: 100%;
   top: 0;
   max-width: 1024px;
-  padding: 1rem 2rem;
-`
-
-const StyledButtonWrapper = styled.div`
+  padding: 1rem 2rem 1rem 0;
   display: flex;
-  justify-content: flex-end;
-  cursor: pointer;
+  justify-content: space-between;
 `
 
 const GlobalStyle = createGlobalStyle`

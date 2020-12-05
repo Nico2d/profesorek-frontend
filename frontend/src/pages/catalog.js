@@ -88,6 +88,7 @@ const Catalog = () => {
 export default Catalog
 
 const StyledContainer = styled.div`
+  margin-top: 4rem;
   display: flex;
 `
 const Main = styled.div`

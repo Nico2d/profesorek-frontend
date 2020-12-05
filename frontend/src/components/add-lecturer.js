@@ -19,6 +19,7 @@ const StyledContainer = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 3rem;
 `
 
 //TO DO: zrobić component button po którym bedzie tutaj dziedziczenie

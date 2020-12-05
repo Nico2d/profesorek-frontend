@@ -8,14 +8,13 @@ const Login = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    const domain =
-      email.includes("@") &&
-      email.substr(email.lastIndexOf("@") + 1).split(" ")[0]
+    const [userName, domain] = email.includes("@") && email.split("@")
 
-    domain.includes("student") ? setAuth("true") : setAuth("false")
-
-    if (isAuth === "true") {
-      window.location.href = "/catalog?mail=" + email
+    if (domain.includes("student")) {
+      window.location.href = "/catalog"
+      localStorage.setItem("userName", userName)
+    } else {
+      setAuth("false")
     }
   }
 
@@ -25,14 +24,18 @@ const Login = () => {
 
       <form onSubmit={handleSubmit}>
         <FormImput
-          type="email" //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! dodaj type do FormInput
+          type="email"
           name="mail input"
           title="Twój mail studencki"
           width={336}
           onInput={setEmail}
         />
 
-        {isAuth === "false" && <p>Wprowadź mail z domeny studenckiej</p>}
+        {isAuth === "false" && (
+          <p>
+            <b>Wprowadź mail z domeny studenckiej</b>
+          </p>
+        )}
 
         <StyledButton type="submit" value="Login" />
       </form>

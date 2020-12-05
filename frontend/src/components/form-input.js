@@ -34,7 +34,6 @@ const StyledHighlight = styled.span`
 
 const StyledWrapper = styled.div`
   position: relative;
-  margin-bottom: 45px;
 `
 
 const StyledBar = styled.span`
