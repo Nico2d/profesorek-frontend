@@ -34,7 +34,6 @@ const StyledHighlight = styled.span`
 
 const StyledWrapper = styled.div`
   position: relative;
-  margin-bottom: 45px;
 `
 
 const StyledBar = styled.span`
@@ -69,7 +68,7 @@ const StyledInput = styled.input`
   border: none;
   border-bottom: 1px solid #757575;
   background: transparent;
-  color: ${({ theme }) => theme.fontColor};
+  color: ${({ theme }) => theme.blackToYellow};
   font-size: ${({ theme }) => theme.fontSize}px;
 
   &:focus {
@@ -78,10 +77,8 @@ const StyledInput = styled.input`
 
   &:focus ~ ${StyledLabel}, &:valid ~ ${StyledLabel} {
     top: -20px;
-    /* font-size: 14px; */
-    
+    left: -1px;
     color: ${({ theme }) => theme.secondary};
-    /* font-weight: bold; */
   }
 
   &:focus ~ ${StyledBar}::before, &:focus ~ ${StyledBar}::after {
@@ -93,11 +90,12 @@ const StyledInput = styled.input`
   }
 `
 
-const FormInput = ({ title, width, onInput }) => {
+const FormInput = ({ title, width, onInput, type = "text" }) => {
   return (
     <StyledWrapper>
       <StyledInput
-        type="text"
+        type={type}
+        autoComplete="true"
         required
         width={width}
         onInput={e => onInput(e.target.value)}

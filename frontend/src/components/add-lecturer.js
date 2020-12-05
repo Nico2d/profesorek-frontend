@@ -11,7 +11,7 @@ const StyledContainer = styled.div`
   align-items: center;
   height: 150px;
   background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.yingYang};
+  color: ${({ theme }) => theme.whiteToBlack};
   font-size: 3rem;
   cursor: pointer;
 `
@@ -19,12 +19,13 @@ const StyledContainer = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 3rem;
 `
 
 //TO DO: zrobić component button po którym bedzie tutaj dziedziczenie
 const StyledButton = styled.input`
   background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.yingYang};
+  color: ${({ theme }) => theme.whiteToBlack};
   display: flex;
   justify-content: center;
   align-items: center;

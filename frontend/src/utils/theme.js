@@ -1,18 +1,25 @@
 export const lightTheme = {
-  yingYang: "#FFFFFF",
   primary: "#18A0FB",
-  secondary: "#0AD3FF",
-  background: "#FFFFFF",
-  fontColor: "#000000",
-  fontSize: 16,
+  primaryToWhite: "#18A0FB",
 
+  secondary: "#0AD3FF",
+  secondaryToGray: "#0AD3FF",
+
+  whiteToBlack: "#FFFFFF",
+  blackToYellow: "#000000",
+
+  fontSize: 16,
 }
 
 export const darkTheme = {
-  yingYang: "#000000",
   primary: "#FAFF00",
+  primaryToWhite: "#FFFFFF",
+
   secondary: "#FFFFFF",
-  background: "#000000",
-  fontColor: "#FAFF00",
+  secondaryToGray: "#C4C4C4",
+
+  whiteToBlack: "#000000",
+  blackToYellow: "#FAFF00",
+
   fontSize: 24,
 }

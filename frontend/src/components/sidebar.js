@@ -4,8 +4,8 @@ import Searchbar from "../components/searchbar"
 
 const StyledSidebar = styled.div`
   max-width: 280px;
-  padding: 1rem;
-  margin-right: 1rem;
+  margin-right: 2rem;
+  margin-top: 2rem;
 `
 
 const StyledLabel = styled.label`
@@ -56,7 +56,7 @@ const StyledLabel = styled.label`
       top: 5px;
       width: 5px;
       height: 10px;
-      border: solid ${({theme}) => theme.yingYang};
+      border: solid ${({ theme }) => theme.whiteToBlack};
       border-width: 0 3px 3px 0;
       transform: rotate(45deg);
     }

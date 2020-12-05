@@ -5,7 +5,7 @@ import { RiPencilFill } from "react-icons/ri"
 const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.primary};
   padding: 1rem;
-  color: ${({ theme }) => theme.yingYang};
+  color: ${({ theme }) => theme.whiteToBlack};
   margin-right: 1rem;
   flex: 1;
 `
@@ -19,7 +19,7 @@ const StyledEditButton = styled.div`
   align-items: center;
   width: 150px;
   background: ${({ theme }) => theme.secondary};
-  color: ${({ theme }) => theme.yingYang};
+  color: ${({ theme }) => theme.whiteToBlack};
   font-size: 5rem;
 
   :hover {

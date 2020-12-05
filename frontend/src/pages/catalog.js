@@ -10,7 +10,7 @@ const Catalog = () => {
   const { loading, error, data } = useQuery(GET_LECTURERS)
   const [search, setSearch] = useState("")
   const [universityList, setUniversityList] = useState([])
-  const [activeUniversityList, setActiveUniversityList] = useState([]) //dospiać tutaj nowo dodany element (universytet)
+  const [activeUniversityList, setActiveUniversityList] = useState([])
   const [lecturerList, setLecturerList] = useState([])
 
   useEffect(() => {
@@ -88,6 +88,7 @@ const Catalog = () => {
 export default Catalog
 
 const StyledContainer = styled.div`
+  margin-top: 4rem;
   display: flex;
 `
 const Main = styled.div`

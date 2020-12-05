@@ -5,7 +5,7 @@ import { FiSearch } from "react-icons/fi"
 const StyledSearchbarWrapper = styled.div`
   margin-top: 7px;
   display: inline-flex;
-  border: 1px solid ${({ theme }) => theme.fontColor};
+  border: 1px solid ${({ theme }) => theme.blackToYellow};
   background: transparent;
   height: 35px;
 `
@@ -14,7 +14,7 @@ const StyledSearchbar = styled.input`
   background: transparent;
   border: none;
   height: 35px;
-  color: ${({ theme }) => theme.fontColor};
+  color: ${({ theme }) => theme.blackToYellow};
   font-size: 16px;
 
   &:focus {
@@ -28,7 +28,7 @@ const StyledSearchbar = styled.input`
 
 const StyledIcon = styled.i`
   margin: auto 10px auto 0.5rem;
-  color: ${({ theme }) => theme.fontColor};
+  color: ${({ theme }) => theme.blackToYellow};
 `
 
 const Searchbar = props => {

@@ -26,15 +26,15 @@ const StyledPopup = styled.div`
   height: 100%;
   top: 50%;
   left: 50%;
-  background: ${({ theme }) => theme.background};
-  color: ${({ theme }) => theme.fontColor};
+  background: ${({ theme }) => theme.whiteToBlack};
+  color: ${({ theme }) => theme.blackToYellow};
   width: 800px;
   height: 500px;
   padding: 2rem;
   box-shadow: 0 0px 2.2px rgba(0, 0, 0, 0.068), 0 0px 5.3px rgba(0, 0, 0, 0.096),
     0 0px 10px rgba(0, 0, 0, 0.12), 0 0px 17.9px rgba(0, 0, 0, 0.144),
     0 0px 33.4px rgba(0, 0, 0, 0.172), 0 0px 80px rgba(0, 0, 0, 0.24);
-  border: 1px solid ${({ theme }) => theme.fontColor};
+  border: 1px solid ${({ theme }) => theme.blackToYellow};
   font-size: ${({ theme }) => theme.fontSize}px;
   transition: all 0.25s linear;
 `
