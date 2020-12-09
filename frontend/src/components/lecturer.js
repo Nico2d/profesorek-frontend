@@ -48,7 +48,7 @@ const Lecturer = data => {
       </StyledWrapperLecturer>
 
       {localStorage.getItem("userName") != null && (
-        <AddOpinion fullName={fullName} />
+        <AddOpinion fullName={fullName} opinionCategories={data.data.opinions_categories}/>
       )}
     </StyledContainer>
   )

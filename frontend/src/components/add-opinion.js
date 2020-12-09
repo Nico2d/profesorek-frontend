@@ -6,7 +6,7 @@ import Button from "../components/button"
 import Question from "../components/question"
 import { useForm } from "react-hook-form"
 
-const AddOpinion = ({ fullName }) => {
+const AddOpinion = ({ fullName, opinionCategories }) => {
   const [openPopup, isOpenPopup] = useState(false)
   const [activeQuestion, setActiveQuestion] = useState(1)
   const [isSummary, setIsSummary] = useState(false)
@@ -52,67 +52,77 @@ const AddOpinion = ({ fullName }) => {
         <RiPencilFill />
       </StyledEditButton>
 
-      <Popup
-        isOpen={openPopup}
-        onClose={isOpenPopup}
-        color={({ theme }) => theme.whiteToBlack}
-      >
-        <div>
-          <StyledHeaderSection>
-            <StyleTitle>{fullName}</StyleTitle>
+      {/* render after isOpanPopup */}
+      {/* i tak wykonuje zapytania grapQL - do poprawy */}
+      {openPopup && (
+        <Popup
+          isOpen={openPopup}
+          onClose={isOpenPopup}
+          color={({ theme }) => theme.whiteToBlack}
+        >
+          <div>
+            <StyledHeaderSection>
+              <StyleTitle>{fullName}</StyleTitle>
 
-            <StyledSelectWrapper>
-              <p>Rodzaj zajęć: </p>
-              <StyledSelect>
-                <option value="wykład">wykład</option>
-                <option value="laboratorium">laboratorium</option>
-                <option value="projekt">projekt</option>
-              </StyledSelect>
-            </StyledSelectWrapper>
+              <StyledSelectWrapper>
+                <p>Rodzaj zajęć: </p>
+                <StyledSelect>
+                  {opinionCategories.length > 1 ? (
+                    opinionCategories.map((category, index) => (
+                      <option key={index} value={category.category_name}>
+                        {category.category_name}
+                      </option>
+                    ))
+                  ) : (
+                    <option>Brak</option>
+                  )}
+                </StyledSelect>
+              </StyledSelectWrapper>
 
-            <StyleDesc>
-              Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz dokonać
-              zmiany poprzez modyfikację
-            </StyleDesc>
-          </StyledHeaderSection>
+              <StyleDesc>
+                Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz
+                dokonać zmiany poprzez modyfikację
+              </StyleDesc>
+            </StyledHeaderSection>
 
-          <div style={{ padding: "2rem" }}>
-            {questionList.map((question, index) => (
-              <StyledQuestionSection
-                key={index}
-                isActive={index + 1 === activeQuestion}
-              >
-                <Question
-                  label={`${index + 1}. ${question}`}
-                  inputRef={register()}
-                  questionNumber={index}
-                />
-              </StyledQuestionSection>
-            ))}
+            <div style={{ padding: "2rem" }}>
+              {questionList.map((question, index) => (
+                <StyledQuestionSection
+                  key={index}
+                  isActive={index + 1 === activeQuestion}
+                >
+                  <Question
+                    label={`${index + 1}. ${question}`}
+                    inputRef={register()}
+                    questionNumber={index}
+                  />
+                </StyledQuestionSection>
+              ))}
 
-            <StyledSummary isActive={isSummary}>
-              <p>Średnia ocena nauczyciela w śród społeczności: </p>
-              <p>Twoja średnia: {average}</p>
-            </StyledSummary>
+              <StyledSummary isActive={isSummary}>
+                <p>Średnia ocena nauczyciela w śród społeczności: </p>
+                <p>Twoja średnia: {average}</p>
+              </StyledSummary>
 
-            <StyledNav>
-              <div>
-                {activeQuestion !== 1 && (
-                  <Button onClick={handleBackButton}>Wstecz</Button>
+              <StyledNav>
+                <div>
+                  {activeQuestion !== 1 && (
+                    <Button onClick={handleBackButton}>Wstecz</Button>
+                  )}
+                </div>
+
+                {activeQuestion < 5 ? (
+                  <Button onClick={handleNextButton}>Dalej</Button>
+                ) : activeQuestion !== 6 ? (
+                  <Button onClick={handleSummaryButton}>Podsumowanie</Button>
+                ) : (
+                  <Button>Dodaj</Button>
                 )}
-              </div>
-
-              {activeQuestion < 5 ? (
-                <Button onClick={handleNextButton}>Dalej</Button>
-              ) : activeQuestion !== 6 ? (
-                <Button onClick={handleSummaryButton}>Podsumowanie</Button>
-              ) : (
-                <Button>Dodaj</Button>
-              )}
-            </StyledNav>
+              </StyledNav>
+            </div>
           </div>
-        </div>
-      </Popup>
+        </Popup>
+      )}
     </>
   )
 }
@@ -186,3 +196,15 @@ const StyledEditButton = styled.div`
     cursor: pointer;
   }
 `
+
+// const GET_LECTURER = gql`
+//   query Lecturer($id: ID!) {
+//     lecturer(id: $id) {
+//       id
+//       Name
+//       opinions_categories{
+//         category_name
+//       }
+//     }
+//   }
+// `

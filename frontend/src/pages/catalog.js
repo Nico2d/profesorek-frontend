@@ -119,7 +119,7 @@ const LecturerWrapper = styled.div`
 const GET_LECTURERS = gql`
   query getLecturers {
     lecturers {
-      Name
+      id
       Name
       Surname
       Titles
