@@ -9,6 +9,7 @@ export const lightTheme = {
   blackToYellow: "#000000",
 
   fontSize: 16,
+  fontSizeSmall: 14,
 }
 
 export const darkTheme = {
@@ -22,4 +23,5 @@ export const darkTheme = {
   blackToYellow: "#FAFF00",
 
   fontSize: 24,
+  fontSizeSmall: 16,
 }

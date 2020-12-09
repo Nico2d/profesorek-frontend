@@ -2,6 +2,24 @@ import styled from "styled-components"
 import React from "react"
 import { FiSearch } from "react-icons/fi"
 
+const Searchbar = props => {
+  const changeHanlder = e => {
+    props.query(e.target.value.toLowerCase())
+  }
+
+  return (
+    <StyledSearchbarWrapper>
+      <StyledIcon as={FiSearch} />
+      <StyledSearchbar
+        type="text"
+        placeholder="Szukaj"
+        onChange={changeHanlder}
+      />
+    </StyledSearchbarWrapper>
+  )
+}
+export default Searchbar
+
 const StyledSearchbarWrapper = styled.div`
   margin-top: 7px;
   display: inline-flex;
@@ -30,22 +48,3 @@ const StyledIcon = styled.i`
   margin: auto 10px auto 0.5rem;
   color: ${({ theme }) => theme.blackToYellow};
 `
-
-const Searchbar = props => {
-  const changeHanlder = e => {
-    props.query(e.target.value.toLowerCase())
-  }
-
-  return (
-    <StyledSearchbarWrapper>
-      <StyledIcon as={FiSearch} />
-      <StyledSearchbar
-        type="text"
-        placeholder="Szukaj"
-        onChange={changeHanlder}
-      />
-    </StyledSearchbarWrapper>
-  )
-}
-
-export default Searchbar

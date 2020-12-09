@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { RiPencilFill } from "react-icons/ri"
+import AddOpinion from "./add-opinion"
 
 const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.primary};
@@ -12,20 +12,7 @@ const Header = styled.h4`
   font-size: 1.5rem;
   margin: 0;
 `
-const StyledEditButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  background: ${({ theme }) => theme.secondary};
-  color: ${({ theme }) => theme.whiteToBlack};
-  font-size: 5rem;
-  margin-left: 1rem;
 
-  :hover {
-    cursor: pointer;
-  }
-`
 const StyledContainer = styled.div`
   display: flex;
   flex-flow: row;
@@ -43,16 +30,12 @@ const StyledOpinionWrapper = styled.div`
 `
 
 const Lecturer = data => {
-  const onClickHandler = () => {
-    console.log("open questions")
-  }
+  const fullName = `${data.data.Titles} ${data.data.Name} ${data.data.Surname}`
 
   return (
     <StyledContainer>
       <StyledWrapperLecturer>
-        <Header>
-          {`${data.data.Titles} ${data.data.Name} ${data.data.Surname}`}
-        </Header>
+        <Header>{fullName}</Header>
         <p>{`${data.data.UniversityName} - ${data.data.UniversityFaculty}`}</p>
 
         <StyledOpinionWrapper>
@@ -65,9 +48,7 @@ const Lecturer = data => {
       </StyledWrapperLecturer>
 
       {localStorage.getItem("userName") != null && (
-        <StyledEditButton onClick={onClickHandler}>
-          <RiPencilFill />
-        </StyledEditButton>
+        <AddOpinion fullName={fullName} />
       )}
     </StyledContainer>
   )
