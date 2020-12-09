@@ -3,7 +3,12 @@ import styled from "styled-components"
 import { AiOutlineCloseSquare } from "react-icons/ai"
 import { motion } from "framer-motion"
 
-const Popup = ({ children, isOpen, onClose, color }) => {
+const Popup = ({
+  children,
+  isOpen,
+  onClose,
+  color = ({ theme }) => theme.blackToYellow,
+}) => {
   return (
     isOpen === true && (
       <StyledPopup
@@ -14,11 +19,9 @@ const Popup = ({ children, isOpen, onClose, color }) => {
       >
         {children}
 
-        <StyledIcon
-          onClick={() => onClose(false)}
-          as={AiOutlineCloseSquare}
-          color={color}
-        />
+        <StyledIcon onClick={() => onClose(false)} iconColor={color}>
+          <AiOutlineCloseSquare />
+        </StyledIcon>
       </StyledPopup>
     )
   )
@@ -32,7 +35,7 @@ const StyledIcon = styled.div`
   top: 1rem;
   right: 1rem;
   font-size: 3rem;
-  color: ${props => props.color};
+  color: ${props => props.iconColor};
 `
 
 const StyledPopup = styled.div`
