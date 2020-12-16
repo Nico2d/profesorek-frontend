@@ -1,6 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import AddOpinion from "./add-opinion"
+import { RiPencilFill } from "react-icons/ri"
+import Popup from "./popup"
 
 const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.primary};
@@ -30,6 +32,7 @@ const StyledOpinionWrapper = styled.div`
 `
 
 const Lecturer = data => {
+  const [openPopup, isOpenPopup] = useState(false)
   const fullName = `${data.data.Titles} ${data.data.Name} ${data.data.Surname}`
 
   return (
@@ -48,10 +51,40 @@ const Lecturer = data => {
       </StyledWrapperLecturer>
 
       {localStorage.getItem("userName") != null && (
-        <AddOpinion fullName={fullName} opinionCategories={data.data.opinions_categories}/>
+        <>
+          <StyledEditButton onClick={() => isOpenPopup(true)}>
+            <RiPencilFill />
+          </StyledEditButton>
+
+          <Popup
+            isOpen={openPopup}
+            onClose={isOpenPopup}
+            color={({ theme }) => theme.whiteToBlack}
+          >
+            <AddOpinion
+              fullName={fullName}
+              opinionCategories={data.data.opinions_categories}
+            />
+          </Popup>
+        </>
       )}
     </StyledContainer>
   )
 }
 
 export default Lecturer
+
+const StyledEditButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  background: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.whiteToBlack};
+  font-size: 5rem;
+  margin-left: 1rem;
+
+  :hover {
+    cursor: pointer;
+  }
+`

@@ -23,7 +23,7 @@ const Catalog = () => {
       setActiveUniversityList(unicalList)
     }
     const onError = error => {
-      console.log("onError")
+      console.log("error: ", error)
     }
     if (onCompleted || onError) {
       if (onCompleted && !loading && !error) {
@@ -41,11 +41,8 @@ const Catalog = () => {
     setLecturerList(prevState => [...prevState, node])
 
     if (universityList.indexOf(node.UniversityName) === -1) {
-      setUniversityList(prev => [...universityList, node.UniversityName])
-      setActiveUniversityList(prev => [
-        ...activeUniversityList,
-        node.UniversityName,
-      ])
+      setUniversityList([...universityList, node.UniversityName])
+      setActiveUniversityList([...activeUniversityList, node.UniversityName])
     }
   }
 

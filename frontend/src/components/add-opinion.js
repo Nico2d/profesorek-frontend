@@ -1,13 +1,10 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { RiPencilFill } from "react-icons/ri"
-import Popup from "./popup"
 import Button from "../components/button"
 import Question from "../components/question"
 import { useForm } from "react-hook-form"
 
 const AddOpinion = ({ fullName, opinionCategories }) => {
-  const [openPopup, isOpenPopup] = useState(false)
   const [activeQuestion, setActiveQuestion] = useState(1)
   const [isSummary, setIsSummary] = useState(false)
   const { register, watch } = useForm()
@@ -47,83 +44,67 @@ const AddOpinion = ({ fullName, opinionCategories }) => {
   }
 
   return (
-    <>
-      <StyledEditButton onClick={() => isOpenPopup(true)}>
-        <RiPencilFill />
-      </StyledEditButton>
+    <div>
+      <StyledHeaderSection>
+        <StyleTitle>{fullName}</StyleTitle>
 
-      {/* render after isOpanPopup */}
-      {/* i tak wykonuje zapytania grapQL - do poprawy */}
-      {openPopup && (
-        <Popup
-          isOpen={openPopup}
-          onClose={isOpenPopup}
-          color={({ theme }) => theme.whiteToBlack}
-        >
+        <StyledSelectWrapper>
+          <p>Rodzaj zajęć: </p>
+          <StyledSelect>
+            {opinionCategories.length > 1 ? (
+              opinionCategories.map((category, index) => (
+                <option key={index} value={category.category_name}>
+                  {category.category_name}
+                </option>
+              ))
+            ) : (
+              <option>Brak</option>
+            )}
+          </StyledSelect>
+        </StyledSelectWrapper>
+
+        <StyleDesc>
+          Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz dokonać
+          zmiany poprzez modyfikację
+        </StyleDesc>
+      </StyledHeaderSection>
+
+      <div style={{ padding: "2rem" }}>
+        {questionList.map((question, index) => (
+          <StyledQuestionSection
+            key={index}
+            isActive={index + 1 === activeQuestion}
+          >
+            <Question
+              label={`${index + 1}. ${question}`}
+              inputRef={register()}
+              questionNumber={index}
+            />
+          </StyledQuestionSection>
+        ))}
+
+        <StyledSummary isActive={isSummary}>
+          <p>Średnia ocena nauczyciela w śród społeczności: </p>
+          <p>Twoja średnia: {average}</p>
+        </StyledSummary>
+
+        <StyledNav>
           <div>
-            <StyledHeaderSection>
-              <StyleTitle>{fullName}</StyleTitle>
-
-              <StyledSelectWrapper>
-                <p>Rodzaj zajęć: </p>
-                <StyledSelect>
-                  {opinionCategories.length > 1 ? (
-                    opinionCategories.map((category, index) => (
-                      <option key={index} value={category.category_name}>
-                        {category.category_name}
-                      </option>
-                    ))
-                  ) : (
-                    <option>Brak</option>
-                  )}
-                </StyledSelect>
-              </StyledSelectWrapper>
-
-              <StyleDesc>
-                Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz
-                dokonać zmiany poprzez modyfikację
-              </StyleDesc>
-            </StyledHeaderSection>
-
-            <div style={{ padding: "2rem" }}>
-              {questionList.map((question, index) => (
-                <StyledQuestionSection
-                  key={index}
-                  isActive={index + 1 === activeQuestion}
-                >
-                  <Question
-                    label={`${index + 1}. ${question}`}
-                    inputRef={register()}
-                    questionNumber={index}
-                  />
-                </StyledQuestionSection>
-              ))}
-
-              <StyledSummary isActive={isSummary}>
-                <p>Średnia ocena nauczyciela w śród społeczności: </p>
-                <p>Twoja średnia: {average}</p>
-              </StyledSummary>
-
-              <StyledNav>
-                <div>
-                  {activeQuestion !== 1 && (
-                    <Button onClick={handleBackButton}>Wstecz</Button>
-                  )}
-                </div>
-
-                {activeQuestion < 5 ? (
-                  <Button onClick={handleNextButton}>Dalej</Button>
-                ) : activeQuestion !== 6 ? (
-                  <Button onClick={handleSummaryButton}>Podsumowanie</Button>
-                ) : (
-                  <Button>Dodaj</Button>
-                )}
-              </StyledNav>
-            </div>
+            {activeQuestion !== 1 && (
+              <Button onClick={handleBackButton}>Wstecz</Button>
+            )}
           </div>
-        </Popup>
-      )}
-    </>
+
+          {activeQuestion < 5 ? (
+            <Button onClick={handleNextButton}>Dalej</Button>
+          ) : activeQuestion !== 6 ? (
+            <Button onClick={handleSummaryButton}>Podsumowanie</Button>
+          ) : (
+            <Button>Dodaj</Button>
+          )}
+        </StyledNav>
+      </div>
+    </div>
   )
 }
 
@@ -180,21 +161,6 @@ const StyledHeaderSection = styled.div`
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.whiteToBlack};
   padding: 1.5rem;
-`
-
-const StyledEditButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  background: ${({ theme }) => theme.secondary};
-  color: ${({ theme }) => theme.whiteToBlack};
-  font-size: 5rem;
-  margin-left: 1rem;
-
-  :hover {
-    cursor: pointer;
-  }
 `
 
 // const GET_LECTURER = gql`

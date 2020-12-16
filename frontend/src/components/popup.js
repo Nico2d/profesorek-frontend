@@ -9,21 +9,19 @@ const Popup = ({
   onClose,
   color = ({ theme }) => theme.blackToYellow,
 }) => {
+  if (!isOpen) return null
   return (
-    isOpen === true && (
-      <StyledPopup
-        as={motion.div}
-        initial={{ scale: 0.5, y: "-50%", x: "-50%" }}
-        animate={{ scale: 1 }}
-        transition={{ type: "tween", duration: 0.25 }}
-      >
-        {children}
-
-        <StyledIcon onClick={() => onClose(false)} iconColor={color}>
-          <AiOutlineCloseSquare />
-        </StyledIcon>
-      </StyledPopup>
-    )
+    <StyledPopup
+      as={motion.div}
+      initial={{ scale: 0.5, y: "-50%", x: "-50%" }}
+      animate={{ scale: 1 }}
+      transition={{ type: "tween", duration: 0.25 }}
+    >
+      {children}
+      <StyledIcon onClick={() => onClose(false)} iconColor={color}>
+        <AiOutlineCloseSquare />
+      </StyledIcon>
+    </StyledPopup>
   )
 }
 
