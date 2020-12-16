@@ -10,6 +10,8 @@ export const lightTheme = {
 
   fontSize: 16,
   fontSizeSmall: 14,
+
+  disableColor: "#C4C4C4",
 }
 
 export const darkTheme = {
@@ -24,4 +26,6 @@ export const darkTheme = {
 
   fontSize: 24,
   fontSizeSmall: 16,
+
+  disableColor: "#C4C4C4",
 }

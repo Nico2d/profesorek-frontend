@@ -1,8 +1,11 @@
 import React from "react"
 import styled from "styled-components"
 
-export const StyledButton = styled.div`
-  background: ${({ theme }) => theme.primary};
+export const StyledButton = styled.button`
+  background: ${props =>
+    props.isActive
+      ? ({ theme }) => theme.disableColor
+      : ({ theme }) => theme.primary};
   color: ${({ theme }) => theme.whiteToBlack};
   display: flex;
   justify-content: center;
@@ -11,6 +14,7 @@ export const StyledButton = styled.div`
   border: none;
   font-weight: bold;
   cursor: pointer;
+  cursor: ${props => (props.isActive ? "default" : "pointer")};
 
   &:active,
   &:focus {
@@ -18,8 +22,12 @@ export const StyledButton = styled.div`
   }
 `
 
-const Button = ({ children, onClick }) => {
-  return <StyledButton onClick={onClick}>{children}</StyledButton>
+const Button = ({ children, onClick, isDisabled = false }) => {
+  return (
+    <StyledButton onClick={onClick} disabled={isDisabled} isActive={isDisabled}>
+      {children}
+    </StyledButton>
+  )
 }
 
 export default Button

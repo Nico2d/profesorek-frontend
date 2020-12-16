@@ -10,6 +10,8 @@ const AddOpinion = ({ fullName, opinionCategories }) => {
   const { register, watch } = useForm()
   const [average, setAverage] = useState(0)
 
+  let buttonDisable = watch(`answer[${activeQuestion}]`) ? false : true
+
   const questionQuantity = 5
   const questionList = [
     "Prowadzący miał dobry stosunek do studentów",
@@ -96,9 +98,13 @@ const AddOpinion = ({ fullName, opinionCategories }) => {
           </div>
 
           {activeQuestion < 5 ? (
-            <Button onClick={handleNextButton}>Dalej</Button>
+            <Button onClick={handleNextButton} isDisabled={buttonDisable}>
+              Dalej
+            </Button>
           ) : activeQuestion !== 6 ? (
-            <Button onClick={handleSummaryButton}>Podsumowanie</Button>
+            <Button onClick={handleSummaryButton} isDisabled={buttonDisable}>
+              Podsumowanie
+            </Button>
           ) : (
             <Button>Dodaj</Button>
           )}
