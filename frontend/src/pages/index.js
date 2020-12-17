@@ -1,25 +1,31 @@
-import React from "react"
-import Register from "../components/register"
+import React, { useState } from "react"
+import SignUp from "../components/sign-up"
+import SignIn from "../components/sign-in"
 import Layout from "../layout/layout"
 import SEO from "../components/seo"
 import styled from "styled-components"
 import LinkButton from "../components/link-button"
 import Triangle from "../assets/Triangle.svg"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <StyledWrapper>
-      <StyleTitleWrapper>
-        <h1>Pomoż sobie oraz innym studentom</h1>
-        <LinkButton text={"Lista Prowadząch"} path="/catalog" />
-      </StyleTitleWrapper>
-      <StyleLoginWrapper>
-        <Register />
-      </StyleLoginWrapper>
-    </StyledWrapper>
-  </Layout>
-)
+const IndexPage = () => {
+  const [isSignIn, setToggleSign] = useState(false)
+
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <StyledWrapper>
+        <StyleTitleWrapper>
+          <h1>Pomoż sobie oraz innym studentom</h1>
+          <LinkButton text={"Lista Prowadząch"} path="/catalog" />
+        </StyleTitleWrapper>
+        <StyleLoginWrapper>
+          {console.log("signToggler:", isSignIn)}
+          {isSignIn ? <SignIn toggleSign={setToggleSign}/> : <SignUp toggleSign={setToggleSign} />}
+        </StyleLoginWrapper>
+      </StyledWrapper>
+    </Layout>
+  )
+}
 export default IndexPage
 
 const StyleTitleWrapper = styled.div`

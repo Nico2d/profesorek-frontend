@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import FormImput from "../components/form-input"
+import FormImput from "./form-input"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 
-const Register = () => {
+const SignUp = ({ toggleSign }) => {
   const { register, handleSubmit, watch, setError, errors } = useForm()
 
   const onSubmit = () => {
@@ -68,13 +68,15 @@ const Register = () => {
       </form>
 
       <StyledFooterWrapper>
-        <p>Masz już konto? <a>Zaloguj się</a></p> 
+        <p>
+          Masz już konto? <a onClick={() => toggleSign(true)}>Zaloguj się</a>
+        </p>
       </StyledFooterWrapper>
     </StyledWrapper>
   )
 }
 
-export default Register
+export default SignUp
 
 const StyledFooterWrapper = styled.div`
   display: block;
@@ -83,8 +85,7 @@ const StyledFooterWrapper = styled.div`
 
   a {
     text-decoration: underline;
-    color: blue;
-
+    color: ${({ theme }) => theme.primaryToWhite};
     cursor: pointer;
   }
 `
