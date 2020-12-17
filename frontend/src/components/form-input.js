@@ -34,6 +34,7 @@ const StyledHighlight = styled.span`
 
 const StyledWrapper = styled.div`
   position: relative;
+  margin-top: 2rem;
 `
 
 const StyledBar = styled.span`
@@ -90,7 +91,14 @@ const StyledInput = styled.input`
   }
 `
 
-const FormInput = ({ title, width, onInput, type = "text" }) => {
+const FormInput = ({
+  inputRef,
+  inputChange,
+  title,
+  width,
+  type = "text",
+  name,
+}) => {
   return (
     <StyledWrapper>
       <StyledInput
@@ -98,8 +106,11 @@ const FormInput = ({ title, width, onInput, type = "text" }) => {
         autoComplete="true"
         required
         width={width}
-        onInput={e => onInput(e.target.value)}
+        // onInput={e => onInput(e.target.value)}
         aria-label={title}
+        ref={inputRef}
+        name={name}
+        onChange={inputChange}
       />
       <StyledHighlight></StyledHighlight>
       <StyledBar width={width}></StyledBar>

@@ -1,5 +1,5 @@
 import React from "react"
-import Login from "../components/login"
+import Register from "../components/register"
 import Layout from "../layout/layout"
 import SEO from "../components/seo"
 import styled from "styled-components"
@@ -15,7 +15,7 @@ const IndexPage = () => (
         <LinkButton text={"Lista Prowadząch"} path="/catalog" />
       </StyleTitleWrapper>
       <StyleLoginWrapper>
-        <Login />
+        <Register />
       </StyleLoginWrapper>
     </StyledWrapper>
   </Layout>

@@ -1,22 +1,44 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import FormImput from "../components/form-input"
+import axios from "axios"
+import { useForm } from "react-hook-form"
+
+// Request API.
+// Add your own code here to customize or restrict how the public can register new users.
+axios
+  .post("http://localhost:1337/auth/local/register", {
+    username: "Strapi user",
+    email: "user@strapi.io",
+    password: "strapiPassword",
+  })
+  .then(response => {
+    // Handle success.
+    console.log("Well done!")
+    console.log("User profile", response.data.user)
+    console.log("User token", response.data.jwt)
+  })
+  .catch(error => {
+    // Handle error.
+    console.log("An error occurred:", error.response)
+  })
 
 const Login = () => {
-  const [email, setEmail] = useState("")
-  const [isAuth, setAuth] = useState("")
+  const { register, handleSubmit, watch, errors } = useForm()
+  // const [email, setEmail] = useState("")
+  // const [isAuth, setAuth] = useState("")
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    const [userName, domain] = email.includes("@") && email.split("@")
+  // const handleSubmit = e => {
+  //   e.preventDefault()
+  //   const [userName, domain] = email.includes("@") && email.split("@")
 
-    if (domain.includes("student")) {
-      window.location.href = "/catalog"
-      localStorage.setItem("userName", userName)
-    } else {
-      setAuth("false")
-    }
-  }
+  //   if (domain.includes("student")) {
+  //     window.location.href = "/catalog"
+  //     localStorage.setItem("userName", userName)
+  //   } else {
+  //     setAuth("false")
+  //   }
+  // }
 
   return (
     <StyledWrapper>
@@ -24,18 +46,32 @@ const Login = () => {
 
       <form onSubmit={handleSubmit}>
         <FormImput
+          type="text"
+          name="username"
+          title="Nazwa użytkownika"
+          width={336}
+          inputRef={register}
+        />
+        <FormImput
           type="email"
-          name="mail input"
+          name="email"
           title="Twój mail studencki"
           width={336}
-          onInput={setEmail}
+          inputRef={register}
+        />
+        <FormImput
+          type="password"
+          name="password"
+          title="Haslo"
+          width={336}
+          inputRef={register}
         />
 
-        {isAuth === "false" && (
+        {/* {isAuth === "false" && (
           <p>
             <b>Wprowadź mail z domeny studenckiej</b>
           </p>
-        )}
+        )} */}
 
         <StyledButton type="submit" value="Login" />
       </form>
