@@ -3,6 +3,7 @@ import styled from "styled-components"
 import FormImput from "./form-input"
 import axios from "axios"
 import { useForm } from "react-hook-form"
+import Button from "../components/button"
 
 const SignUp = ({ toggleSign }) => {
   const { register, handleSubmit, watch, setError, errors } = useForm()
@@ -26,7 +27,7 @@ const SignUp = ({ toggleSign }) => {
 
   return (
     <StyledWrapper>
-      <StyledHeader>Rejestracja</StyledHeader>
+      <StyledHeader>Sign Up</StyledHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormImput
@@ -64,7 +65,10 @@ const SignUp = ({ toggleSign }) => {
         {errors.email && (
           <StyledErrorMessege>{errors.email.message}</StyledErrorMessege>
         )}
-        <StyledButton type="submit" value="Załóż konto" />
+
+        <ButtonWrapper>
+          <Button>Załóż konto</Button>
+        </ButtonWrapper>
       </form>
 
       <StyledFooterWrapper>
@@ -77,6 +81,12 @@ const SignUp = ({ toggleSign }) => {
 }
 
 export default SignUp
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+`
 
 const StyledFooterWrapper = styled.div`
   display: block;
@@ -107,21 +117,4 @@ const StyledWrapper = styled.div`
 
 const StyledHeader = styled.h2`
   margin-bottom: 3rem;
-`
-const StyledButton = styled.input`
-  background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.whiteToBlack};
-  font-size: ${({ theme }) => theme.fontSize}px;
-  display: flex;
-  padding: 1rem 4rem;
-  border: none;
-  font-weight: bold;
-  margin: 1rem auto;
-  cursor: pointer;
-  margin-top: 3rem;
-
-  &:active,
-  &:focus {
-    border: none;
-  }
 `

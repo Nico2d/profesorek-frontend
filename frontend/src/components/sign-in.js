@@ -1,28 +1,48 @@
-import React, { useState } from "react"
+import React from "react"
 import styled from "styled-components"
 import FormImput from "./form-input"
 import axios from "axios"
 import { useForm } from "react-hook-form"
+import Button from "../components/button"
+import { StyledLabel } from "../components/sidebar"
+import { setUser } from "../services/auth"
 
 const SignIn = ({ toggleSign }) => {
-  const { register, handleSubmit, watch, errors } = useForm()
+  const { register, handleSubmit, watch, errors, setError } = useForm()
+
+  const onSubmit = () => {
+    axios
+      .post("http://localhost:1337/auth/local", {
+        identifier: watch("username"),
+        password: watch("password"),
+      })
+      .then(response => {
+        console.log("Well done!")
+        setUser(response.data.user)
+        window.location.href = "http://localhost:8000/catalog"
+      })
+      .catch(error => {
+        let json = JSON.parse(error.response.request.responseText)
+        let errorMessege = json.message[0].messages[0].message
+
+        console.log(errorMessege)
+
+        setError("username", {
+          type: "manual",
+          message: errorMessege,
+        })
+      })
+  }
 
   return (
     <StyledWrapper>
-      <StyledHeader>Login</StyledHeader>
+      <StyledHeader>Sign In</StyledHeader>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <FormImput
           type="text"
           name="username"
-          title="Nazwa użytkownika"
-          width={336}
-          inputRef={register}
-        />
-        <FormImput
-          type="email"
-          name="email"
-          title="Twój mail studencki"
+          title="Nazwa użytkownika / e-mail"
           width={336}
           inputRef={register}
         />
@@ -33,8 +53,20 @@ const SignIn = ({ toggleSign }) => {
           width={336}
           inputRef={register}
         />
+        <Whitespace height="1.5rem" />
+        <StyledLabel>
+          <input type="checkbox" />
+          <span></span>
+          Pozostań zalogowany
+        </StyledLabel>
 
-        <StyledButton type="submit" value="Login" />
+        {errors.username && (
+          <StyledErrorMessege>{errors.username.message}</StyledErrorMessege>
+        )}
+
+        <ButtonWrapper>
+          <Button>Sign in</Button>
+        </ButtonWrapper>
       </form>
       <StyledFooterWrapper>
         <p>
@@ -46,6 +78,20 @@ const SignIn = ({ toggleSign }) => {
 }
 
 export default SignIn
+
+const Whitespace = styled.div`
+  height: ${props => props.height};
+`
+
+const StyledErrorMessege = styled.p`
+  color: red;
+`
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+`
 
 const StyledFooterWrapper = styled.div`
   display: block;
@@ -72,20 +118,4 @@ const StyledWrapper = styled.div`
 
 const StyledHeader = styled.h2`
   margin-bottom: 3rem;
-`
-const StyledButton = styled.input`
-  background: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.whiteToBlack};
-  font-size: ${({ theme }) => theme.fontSize}px;
-  display: flex;
-  padding: 1rem 4rem;
-  border: none;
-  font-weight: bold;
-  margin: 1rem auto;
-  cursor: pointer;
-
-  &:active,
-  &:focus {
-    border: none;
-  }
 `

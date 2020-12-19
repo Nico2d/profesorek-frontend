@@ -8,7 +8,7 @@ const StyledSidebar = styled.div`
   margin-top: 2rem;
 `
 
-const StyledLabel = styled.label`
+export const StyledLabel = styled.label`
   display: block;
   position: relative;
   padding-left: 35px;

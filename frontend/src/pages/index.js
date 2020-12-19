@@ -6,9 +6,10 @@ import SEO from "../components/seo"
 import styled from "styled-components"
 import LinkButton from "../components/link-button"
 import Triangle from "../assets/Triangle.svg"
+import { isLoggedIn } from "../services/auth"
 
 const IndexPage = () => {
-  const [isSignIn, setToggleSign] = useState(false)
+  const [isSignIn, setToggleSign] = useState(true)
 
   return (
     <Layout>
@@ -18,9 +19,14 @@ const IndexPage = () => {
           <h1>Pomoż sobie oraz innym studentom</h1>
           <LinkButton text={"Lista Prowadząch"} path="/catalog" />
         </StyleTitleWrapper>
+
         <StyleLoginWrapper>
-          {console.log("signToggler:", isSignIn)}
-          {isSignIn ? <SignIn toggleSign={setToggleSign}/> : <SignUp toggleSign={setToggleSign} />}
+          {isLoggedIn() &&
+            (isSignIn ? (
+              <SignIn toggleSign={setToggleSign} />
+            ) : (
+              <SignUp toggleSign={setToggleSign} />
+            ))}
         </StyleLoginWrapper>
       </StyledWrapper>
     </Layout>

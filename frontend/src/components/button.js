@@ -13,7 +13,6 @@ export const StyledButton = styled.button`
   padding: 1rem 4rem;
   border: none;
   font-weight: bold;
-  cursor: pointer;
   cursor: ${props => (props.isActive ? "default" : "pointer")};
 
   &:active,

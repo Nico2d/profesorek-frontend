@@ -5,10 +5,12 @@ import { Link } from "gatsby"
 import { FaDoorOpen } from "react-icons/fa"
 import { useDarkMode } from "../components/useDarkMode"
 import ThemeToggler from "../components/themeToggler"
+import { getUser } from "../services/auth"
 
 const Layout = ({ children }) => {
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === "light" ? lightTheme : darkTheme
+  const user = getUser()
 
   const logout = () => {
     localStorage.removeItem("userName")
@@ -23,8 +25,7 @@ const Layout = ({ children }) => {
       <StyledContainer>
         <StyledNavbar>
           <StyledWelcome as={Link} to="/">
-            {localStorage.getItem("userName") != null &&
-              `Witaj ${localStorage.getItem("userName")}!`}
+            {user !== {} && `Witaj ${user.username}!`}
           </StyledWelcome>
 
           <div style={{ display: "flex" }}>
