@@ -5,6 +5,7 @@ import Layout from "../layout/layout"
 import Sidebar from "../components/sidebar"
 import AddLecturer from "../components/add-lecturer"
 import { gql, useQuery } from "@apollo/client"
+import { isSignIn } from "../services/auth"
 
 const Catalog = () => {
   const { loading, error, data } = useQuery(GET_LECTURERS)
@@ -58,8 +59,7 @@ const Catalog = () => {
         <StyledMainContent>
           <StyledHeader>
             <StyledHeading>Lista prowadzących</StyledHeading>
-            {localStorage.getItem("userName") == null &&
-              `Zaloguj sie aby dodać opinie`}
+            {!isSignIn() && `Zaloguj sie aby dodać opinie`}
           </StyledHeader>
           <LecturerWrapper>
             {lecturerList
@@ -77,7 +77,7 @@ const Catalog = () => {
                 <Lecturer key={index} data={item} />
               ))}
           </LecturerWrapper>
-          {localStorage.getItem("userName") != null && (
+          {isSignIn() && (
             <AddLecturer
               callback={callback => AddNewLecturer(callback)}
             ></AddLecturer>

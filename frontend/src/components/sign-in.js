@@ -5,7 +5,7 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import Button from "../components/button"
 import { StyledLabel } from "../components/sidebar"
-import { setUser } from "../services/auth"
+import { setUser, setToken } from "../services/auth"
 
 const SignIn = ({ toggleSign }) => {
   const { register, handleSubmit, watch, errors, setError } = useForm()
@@ -19,13 +19,12 @@ const SignIn = ({ toggleSign }) => {
       .then(response => {
         console.log("Well done!")
         setUser(response.data.user)
+        setToken(response.data.jwt)
         window.location.href = "http://localhost:8000/catalog"
       })
       .catch(error => {
         let json = JSON.parse(error.response.request.responseText)
         let errorMessege = json.message[0].messages[0].message
-
-        console.log(errorMessege)
 
         setError("username", {
           type: "manual",
