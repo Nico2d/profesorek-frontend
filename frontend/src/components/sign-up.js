@@ -17,8 +17,6 @@ const SignUp = ({ toggleSign }) => {
       })
       .then(response => {
         console.log("Well done!")
-        console.log("User profile", response.data.user)
-        console.log("User token", response.data.jwt)
       })
       .catch(error => {
         console.log(eval(JSON.stringify(error.response.request.responseText)))

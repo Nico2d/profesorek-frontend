@@ -4,18 +4,14 @@ import { useForm } from "react-hook-form"
 import axios from "axios"
 import { getToken, getUser } from "../services/auth"
 import OpinionCategory from "./opinion-category"
-import Button from "../components/button"
 import Question from "../components/question"
+import OpinionNavigation from "./opinion-navigation"
 
 const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
+  console.log("refresh component AddOpinion")
   const [activeQuestion, setActiveQuestion] = useState(1)
-  const [isSummary, setIsSummary] = useState(false)
   const { register, watch } = useForm()
-  const [average, setAverage] = useState(0)
-  const [userOpinionList, setUserOpinionList] = useState([])
   const [opinionsData, setOpinionsData] = useState([])
-
-  let buttonDisable = watch(`answer[${activeQuestion}]`) ? false : true
 
   const questionQuantity = 5
   const questionList = [
@@ -34,45 +30,42 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
         },
       })
       .then(({ data }) => {
-        let userIssuedOpinionsList = []
-        data
+        let userData = data
           .filter(({ users_permissions_user: student }) => {
             return student.id === getUser().id
           })
           .filter(({ opinions_category }) => {
             return opinions_category.lecturer == lecturerID
           })
-          .map(({ opinions_category }) => {
-            userIssuedOpinionsList.push(opinions_category.category_name)
-          })
 
-        setUserOpinionList(userIssuedOpinionsList)
-        setOpinionsData(data)
+        setOpinionsData(userData)
       })
   }, [])
 
-  const handleSummaryButton = () => {
-    let sum = 0
-    setActiveQuestion(activeQuestion + 1)
-    setIsSummary(true)
-
-    for (let i = 1; i <= questionQuantity; i++) {
-      sum += parseInt(watch(`answer[${i}]`))
+  //początkowo to powinna byc pierwsza categoria
+  const getUserAnswers = loadUserRatedCategory => {
+    //chce dostac pytania dla kategori
+    if (loadUserRatedCategory !== null) {
+      opinionsData.map(category => {
+        console.log(loadUserRatedCategory)
+        console.log(category.opinions_category.category_name)
+        if (
+          category.opinions_category.category_name === loadUserRatedCategory
+        ) {
+          console.log("my questions:", category.questions)
+        }
+      })
     }
-
-    setAverage(sum / questionQuantity)
   }
 
-  const handleBackButton = () => {
-    if (activeQuestion - 1 == questionQuantity) {
-      setIsSummary(false)
-    }
+  const getUserRatedCategory = () => {
+    let userIssuedOpinionsList = []
 
-    setActiveQuestion(activeQuestion - 1)
-  }
+    opinionsData.map(({ opinions_category }) => {
+      userIssuedOpinionsList.push(opinions_category.category_name)
+    })
 
-  const handleNextButton = () => {
-    setActiveQuestion(activeQuestion + 1)
+    return userIssuedOpinionsList
   }
 
   return (
@@ -81,11 +74,13 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
         <StyleTitle>{fullName}</StyleTitle>
         <OpinionCategory
           lecturerCategories={opinionCategories}
-          userRatedCategories={userOpinionList}
+          userRatedCategories={getUserRatedCategory()}
+          getSelectedCategoryNameOfUserAnswers={value => getUserAnswers(value)}
         />
       </StyledHeaderSection>
 
       <div style={{ padding: "2rem" }}>
+        {getUserAnswers()}
         {questionList.map((question, index) => (
           <StyledQuestionSection
             key={index}
@@ -99,30 +94,12 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
           </StyledQuestionSection>
         ))}
 
-        <StyledSummary isActive={isSummary}>
-          <p>Średnia ocena nauczyciela w śród społeczności: </p>
-          <p>Twoja średnia: {average}</p>
-        </StyledSummary>
-
-        <StyledNav>
-          <div>
-            {activeQuestion !== 1 && (
-              <Button onClick={handleBackButton}>Wstecz</Button>
-            )}
-          </div>
-
-          {activeQuestion < 5 ? (
-            <Button onClick={handleNextButton} isDisabled={buttonDisable}>
-              Dalej
-            </Button>
-          ) : activeQuestion !== 6 ? (
-            <Button onClick={handleSummaryButton} isDisabled={buttonDisable}>
-              Podsumowanie
-            </Button>
-          ) : (
-            <Button>Dodaj</Button>
-          )}
-        </StyledNav>
+        <OpinionNavigation
+          activeQuestion={activeQuestion}
+          setActiveQuestion={setActiveQuestion}
+          questionQuantity={questionQuantity}
+          watch={watch}
+        />
       </div>
     </div>
   )
@@ -130,19 +107,8 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
 
 export default AddOpinion
 
-const StyledSummary = styled.div`
-  display: ${props => (props.isActive ? "inherit" : "none")};
-`
-
 const StyledQuestionSection = styled.div`
   display: ${props => (props.isActive ? "inherit" : "none")};
-`
-
-const StyledNav = styled.div`
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  margin-top: 4rem;
 `
 
 const StyleTitle = styled.h2`

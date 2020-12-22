@@ -1,15 +1,32 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
-import { useForm } from "react-hook-form"
 
-const OpinionCategory = ({ lecturerCategories, userRatedCategories }) => {
-  const { register, watch } = useForm()
+const OpinionCategory = ({
+  lecturerCategories,
+  userRatedCategories,
+  getSelectedCategoryNameOfUserAnswers,
+}) => {
+  const [getSelect, setSelect] = useState(lecturerCategories[0].category_name)
+
+  const isRatedByUser = () => {
+    if (userRatedCategories.includes(getSelect)) {
+      getSelectedCategoryNameOfUserAnswers(getSelect)
+      return (
+        <StyleDesc>
+          Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz dokonać
+          zmiany poprzez modyfikację
+        </StyleDesc>
+      )
+    } else {
+      getSelectedCategoryNameOfUserAnswers(null)
+    }
+  }
 
   return (
     <>
       <StyledSelectWrapper>
         <p>Rodzaj zajęć: </p>
-        <StyledSelect ref={register} name="category">
+        <StyledSelect onChange={e => setSelect(e.target.value)} name="category">
           {lecturerCategories.length > 0 ? (
             lecturerCategories.map((category, index) => (
               <option key={index} value={category.category_name}>
@@ -22,12 +39,7 @@ const OpinionCategory = ({ lecturerCategories, userRatedCategories }) => {
         </StyledSelect>
       </StyledSelectWrapper>
 
-      {userRatedCategories.includes(watch("category")) && (
-        <StyleDesc>
-          Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz dokonać
-          zmiany poprzez modyfikację
-        </StyleDesc>
-      )}
+      {isRatedByUser()}
     </>
   )
 }
