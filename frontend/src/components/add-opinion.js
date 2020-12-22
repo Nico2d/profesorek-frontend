@@ -1,14 +1,19 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
+import { useForm } from "react-hook-form"
+import axios from "axios"
+import { getToken, getUser } from "../services/auth"
+import OpinionCategory from "./opinion-category"
 import Button from "../components/button"
 import Question from "../components/question"
-import { useForm } from "react-hook-form"
 
-const AddOpinion = ({ fullName, opinionCategories }) => {
+const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
   const [activeQuestion, setActiveQuestion] = useState(1)
   const [isSummary, setIsSummary] = useState(false)
   const { register, watch } = useForm()
   const [average, setAverage] = useState(0)
+  const [userOpinionList, setUserOpinionList] = useState([])
+  const [opinionsData, setOpinionsData] = useState([])
 
   let buttonDisable = watch(`answer[${activeQuestion}]`) ? false : true
 
@@ -20,6 +25,31 @@ const AddOpinion = ({ fullName, opinionCategories }) => {
     "Prowadzący trzymał się przedstawionych zasad zaliczenia przedmiotu",
     "Prowadzący chętny do pomocy studenom",
   ]
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:1337/opinions", {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+      .then(({ data }) => {
+        let userIssuedOpinionsList = []
+        data
+          .filter(({ users_permissions_user: student }) => {
+            return student.id === getUser().id
+          })
+          .filter(({ opinions_category }) => {
+            return opinions_category.lecturer == lecturerID
+          })
+          .map(({ opinions_category }) => {
+            userIssuedOpinionsList.push(opinions_category.category_name)
+          })
+
+        setUserOpinionList(userIssuedOpinionsList)
+        setOpinionsData(data)
+      })
+  }, [])
 
   const handleSummaryButton = () => {
     let sum = 0
@@ -49,26 +79,10 @@ const AddOpinion = ({ fullName, opinionCategories }) => {
     <div>
       <StyledHeaderSection>
         <StyleTitle>{fullName}</StyleTitle>
-
-        <StyledSelectWrapper>
-          <p>Rodzaj zajęć: </p>
-          <StyledSelect>
-            {opinionCategories.length > 1 ? (
-              opinionCategories.map((category, index) => (
-                <option key={index} value={category.category_name}>
-                  {category.category_name}
-                </option>
-              ))
-            ) : (
-              <option>Brak</option>
-            )}
-          </StyledSelect>
-        </StyledSelectWrapper>
-
-        <StyleDesc>
-          Ten rodzaj zajęć zoztał już przez Ciebie oceniony. Możesz dokonać
-          zmiany poprzez modyfikację
-        </StyleDesc>
+        <OpinionCategory
+          lecturerCategories={opinionCategories}
+          userRatedCategories={userOpinionList}
+        />
       </StyledHeaderSection>
 
       <div style={{ padding: "2rem" }}>
@@ -131,33 +145,6 @@ const StyledNav = styled.div`
   margin-top: 4rem;
 `
 
-const StyledSelectWrapper = styled.div`
-  display: flex;
-  margin-bottom: 1rem;
-
-  P {
-    margin: 0;
-  }
-`
-
-const StyleDesc = styled.p`
-  margin: 0;
-  font-size: ${({ theme }) => theme.fontSizeSmall}px;
-`
-
-const StyledSelect = styled.select`
-  background: transparent;
-  border: none;
-  margin: 0;
-  margin-left: 2rem;
-  color: ${({ theme }) => theme.whiteToBlack};
-  font-size: ${({ theme }) => theme.fontSize}px;
-
-  option {
-    color: black;
-  }
-`
-
 const StyleTitle = styled.h2`
   margin: 0;
   margin-bottom: 1rem;
@@ -168,15 +155,3 @@ const StyledHeaderSection = styled.div`
   color: ${({ theme }) => theme.whiteToBlack};
   padding: 1.5rem;
 `
-
-// const GET_LECTURER = gql`
-//   query Lecturer($id: ID!) {
-//     lecturer(id: $id) {
-//       id
-//       Name
-//       opinions_categories{
-//         category_name
-//       }
-//     }
-//   }
-// `

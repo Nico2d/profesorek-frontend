@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_questions_questions",
+  "info": {
+    "name": "Questions",
+    "icon": "align-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "question_number": {
+      "type": "integer"
+    },
+    "value": {
+      "type": "integer"
+    }
+  }
+}

@@ -11,31 +11,19 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "date_added": {
-      "type": "date"
-    },
     "opinions_category": {
       "model": "opinions-category",
       "via": "opinions"
     },
-    "student": {
-      "model": "student",
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user",
       "via": "opinions"
     },
-    "question_1": {
-      "type": "integer"
-    },
-    "question_2": {
-      "type": "integer"
-    },
-    "question_3": {
-      "type": "integer"
-    },
-    "question_4": {
-      "type": "integer"
-    },
-    "question_5": {
-      "type": "integer"
+    "questions": {
+      "type": "component",
+      "repeatable": true,
+      "component": "questions.questions"
     }
   }
 }

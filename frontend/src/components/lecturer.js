@@ -3,7 +3,7 @@ import styled from "styled-components"
 import AddOpinion from "./add-opinion"
 import { RiPencilFill } from "react-icons/ri"
 import Popup from "./popup"
-import {isSignIn} from '../services/auth'
+import { isSignIn } from "../services/auth"
 
 const StyledWrapperLecturer = styled.div`
   background: ${({ theme }) => theme.primary};
@@ -65,6 +65,7 @@ const Lecturer = data => {
             <AddOpinion
               fullName={fullName}
               opinionCategories={data.data.opinions_categories}
+              lecturerID={data.data.id}
             />
           </Popup>
         </>
