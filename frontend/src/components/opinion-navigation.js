@@ -50,11 +50,11 @@ const OpinionNavigation = ({
           )}
         </div>
 
-        {activeQuestion < 5 ? (
+        {activeQuestion < questionQuantity ? (
           <Button onClick={handleNextButton} isDisabled={buttonDisable}>
             Dalej
           </Button>
-        ) : activeQuestion !== 6 ? (
+        ) : activeQuestion !== questionQuantity + 1 ? (
           <Button onClick={handleSummaryButton} isDisabled={buttonDisable}>
             Podsumowanie
           </Button>

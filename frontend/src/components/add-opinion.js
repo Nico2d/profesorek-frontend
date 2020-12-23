@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from "react"
-import styled from "styled-components"
-import { useForm } from "react-hook-form"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
+import styled from "styled-components"
 import { getToken, getUser } from "../services/auth"
-import OpinionCategory from "./opinion-category"
-import Question from "../components/question"
-import OpinionNavigation from "./opinion-navigation"
 
 const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
-  console.log("refresh component AddOpinion")
-  const [activeQuestion, setActiveQuestion] = useState(1)
-  const { register, watch } = useForm()
-  const [opinionsData, setOpinionsData] = useState([])
-
-  const questionQuantity = 5
-  const questionList = [
-    "Prowadzący miał dobry stosunek do studentów",
-    "Prowadzący w jasny sposób przekazywał treść materiału",
-    "Prowadzący okazywał zainteresowanie przedmiotem",
-    "Prowadzący trzymał się przedstawionych zasad zaliczenia przedmiotu",
-    "Prowadzący chętny do pomocy studenom",
-  ]
+  const [getOpinions, setOpinions] = useState([])
+  const [categoryName, setCategoryName] = useState(
+    opinionCategories.length > 0
+      ? opinionCategories[0].category_name
+      : opinionCategories
+  )
 
   useEffect(() => {
     axios
@@ -38,67 +27,27 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
             return opinions_category.lecturer == lecturerID
           })
 
-        setOpinionsData(userData)
+        setOpinions(userData)
       })
   }, [])
 
-  //początkowo to powinna byc pierwsza categoria
-  const getUserAnswers = loadUserRatedCategory => {
-    //chce dostac pytania dla kategori
-    if (loadUserRatedCategory !== null) {
-      opinionsData.map(category => {
-        console.log(loadUserRatedCategory)
-        console.log(category.opinions_category.category_name)
-        if (
-          category.opinions_category.category_name === loadUserRatedCategory
-        ) {
-          console.log("my questions:", category.questions)
-        }
-      })
-    }
-  }
-
-  const getUserRatedCategory = () => {
-    let userIssuedOpinionsList = []
-
-    opinionsData.map(({ opinions_category }) => {
-      userIssuedOpinionsList.push(opinions_category.category_name)
-    })
-
-    return userIssuedOpinionsList
-  }
-
   return (
     <div>
+      {/* Lecturer Section */}
       <StyledHeaderSection>
         <StyleTitle>{fullName}</StyleTitle>
-        <OpinionCategory
+        <CategorySelector
           lecturerCategories={opinionCategories}
-          userRatedCategories={getUserRatedCategory()}
-          getSelectedCategoryNameOfUserAnswers={value => getUserAnswers(value)}
+          getSelected={setCategoryName}
         />
       </StyledHeaderSection>
 
-      <div style={{ padding: "2rem" }}>
-        {getUserAnswers()}
-        {questionList.map((question, index) => (
-          <StyledQuestionSection
-            key={index}
-            isActive={index + 1 === activeQuestion}
-          >
-            <Question
-              label={`${index + 1}. ${question}`}
-              inputRef={register()}
-              questionNumber={index}
-            />
-          </StyledQuestionSection>
-        ))}
+      {/* User Section */}
 
-        <OpinionNavigation
-          activeQuestion={activeQuestion}
-          setActiveQuestion={setActiveQuestion}
-          questionQuantity={questionQuantity}
-          watch={watch}
+      <div>
+        <OpinionAnswers
+          opinions={getOpinions}
+          selectedCategory={categoryName}
         />
       </div>
     </div>
@@ -106,10 +55,6 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
 }
 
 export default AddOpinion
-
-const StyledQuestionSection = styled.div`
-  display: ${props => (props.isActive ? "inherit" : "none")};
-`
 
 const StyleTitle = styled.h2`
   margin: 0;
@@ -121,3 +66,46 @@ const StyledHeaderSection = styled.div`
   color: ${({ theme }) => theme.whiteToBlack};
   padding: 1.5rem;
 `
+
+const CategorySelector = ({ lecturerCategories, getSelected }) => {
+  return (
+    <>
+      <p>Rodzaj zajęć: </p>
+      <select onChange={e => getSelected(e.target.value)}>
+        {lecturerCategories.length > 0 ? (
+          lecturerCategories.map((category, index) => (
+            <option key={index} value={category.category_name}>
+              {category.category_name}
+            </option>
+          ))
+        ) : (
+          <option>Brak</option>
+        )}
+      </select>
+    </>
+  )
+}
+
+const OpinionAnswers = ({ opinions, selectedCategory }) => {
+  console.log("render OpinionAnswers");
+  return (
+    <div>
+      {opinions.map(({ opinions_category, questions }) => {
+        opinions_category.category_name === selectedCategory && (
+          questions.map((answer, index) => <p key={index}>DUPA SRAKA</p>)
+
+
+        )
+        //   console.log(answer.value)
+
+        //   return (
+        //     <div key={index}>
+        //       DUPA
+        //       <p>Moja wartosć:</p>
+        //     </div>
+        //   )
+        // })
+      })}
+    </div>
+  )
+}

@@ -6,7 +6,12 @@ const OpinionCategory = ({
   userRatedCategories,
   getSelectedCategoryNameOfUserAnswers,
 }) => {
-  const [getSelect, setSelect] = useState(lecturerCategories[0].category_name)
+  // console.log("lecturerCategories", )
+  const [getSelect, setSelect] = useState(
+    lecturerCategories.length > 0
+      ? lecturerCategories[0].category_name
+      : lecturerCategories
+  )
 
   const isRatedByUser = () => {
     if (userRatedCategories.includes(getSelect)) {
