@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import axios from "axios"
 import styled from "styled-components"
 import { getToken, getUser } from "../services/auth"
+import Question from "../components/question"
+import { useForm } from "react-hook-form"
 
 const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
   const [getOpinions, setOpinions] = useState([])
@@ -46,7 +48,7 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
 
       <div>
         <OpinionAnswers
-          opinions={getOpinions}
+          userOpinions={getOpinions}
           selectedCategory={categoryName}
         />
       </div>
@@ -86,26 +88,48 @@ const CategorySelector = ({ lecturerCategories, getSelected }) => {
   )
 }
 
-const OpinionAnswers = ({ opinions, selectedCategory }) => {
-  console.log("render OpinionAnswers");
+const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
+  //sprawdzic ile jest pytan - moge wziac liczbe pytan z questionList.lenght
+  const questionList = [
+    "Prowadzący miał dobry stosunek do studentów",
+    "Prowadzący w jasny sposób przekazywał treść materiału",
+    "Prowadzący okazywał zainteresowanie przedmiotem",
+    "Prowadzący trzymał się przedstawionych zasad zaliczenia przedmiotu",
+    "Prowadzący chętny do pomocy studenom",
+  ]
+
+  const { register } = useForm()
+
   return (
     <div>
-      {opinions.map(({ opinions_category, questions }) => {
-        opinions_category.category_name === selectedCategory && (
-          questions.map((answer, index) => <p key={index}>DUPA SRAKA</p>)
-
-
-        )
-        //   console.log(answer.value)
-
-        //   return (
-        //     <div key={index}>
-        //       DUPA
-        //       <p>Moja wartosć:</p>
-        //     </div>
-        //   )
-        // })
+      {userOpinions.map(({ opinions_category, questions }) => {
+        if (opinions_category.category_name === selectedCategory) {
+          return questions.map(({ question_number, value }) => {
+            return (
+              <p key={question_number}>
+                {question_number}: {value}
+              </p>
+            )
+          })
+        } else {
+          return questionList.map((question, index) => (
+            <StyledQuestionSection
+              key={index}
+              isActive={true}
+            >
+              <Question
+                label={`${index + 1}. ${question}`}
+                inputRef={register()}
+                questionNumber={index}
+              />
+            </StyledQuestionSection>
+          ))
+        }
       })}
     </div>
   )
 }
+
+const StyledQuestionSection = styled.div`
+  display: ${props => (props.isActive ? "inherit" : "none")};
+`
