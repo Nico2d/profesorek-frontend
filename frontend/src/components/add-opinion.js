@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { getToken, getUser } from "../services/auth"
 import Question from "../components/question"
 import { useForm } from "react-hook-form"
+import OpinionNavigation from "./opinion-navigation"
 
 const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
   const [getOpinions, setOpinions] = useState([])
@@ -89,7 +90,6 @@ const CategorySelector = ({ lecturerCategories, getSelected }) => {
 }
 
 const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
-  //sprawdzic ile jest pytan - moge wziac liczbe pytan z questionList.lenght
   const questionList = [
     "Prowadzący miał dobry stosunek do studentów",
     "Prowadzący w jasny sposób przekazywał treść materiału",
@@ -98,11 +98,11 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     "Prowadzący chętny do pomocy studenom",
   ]
 
-  const { register, setValue, reset } = useForm()
+  const { register, setValue, reset, watch } = useForm()
+  const [currentQuestion, setCurrentQuestion] = useState(1)
 
   useEffect(() => {
     userOpinions.map(({ opinions_category, questions }) => {
-      console.log(questions)
       if (opinions_category.category_name === selectedCategory) {
         questions.map(({ question_id, value }) => {
           setValue(`${question_id}`, `${value}`, { shouldDirty: true })
@@ -115,14 +115,19 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
           answer_4: "",
           answer_5: "",
         })
+
+        setCurrentQuestion(1)
       }
     })
   }, [userOpinions, selectedCategory])
 
   return (
-    <div>
+    <div style={{ padding: "2rem" }}>
       {questionList.map((question, index) => (
-        <StyledQuestionSection key={index} isActive={true}>
+        <StyledQuestionSection
+          key={index}
+          isActive={index + 1 === currentQuestion}
+        >
           <Question
             label={`${index + 1}. ${question}`}
             inputRef={register}
@@ -130,6 +135,13 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
           />
         </StyledQuestionSection>
       ))}
+
+      <OpinionNavigation
+        activeQuestion={currentQuestion}
+        setActiveQuestion={setCurrentQuestion}
+        questionQuantity={questionList.length}
+        watch={watch}
+      />
     </div>
   )
 }

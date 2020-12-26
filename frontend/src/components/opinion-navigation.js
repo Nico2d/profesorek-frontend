@@ -8,7 +8,8 @@ const OpinionNavigation = ({
   questionQuantity,
   watch,
 }) => {
-  let buttonDisable = watch(`answer[${activeQuestion}]`) ? false : true
+  let buttonDisable = watch(`answer_${activeQuestion}`) ? false : true
+
   const [isSummary, setIsSummary] = useState(false)
   const [average, setAverage] = useState(0)
 
@@ -18,7 +19,7 @@ const OpinionNavigation = ({
     setIsSummary(true)
 
     for (let i = 1; i <= questionQuantity; i++) {
-      sum += parseInt(watch(`answer[${i}]`))
+      sum += parseInt(watch(`answer_${i}`))
     }
 
     setAverage(sum / questionQuantity)
@@ -35,10 +36,9 @@ const OpinionNavigation = ({
   const handleNextButton = () => {
     setActiveQuestion(activeQuestion + 1)
   }
-
   return (
     <>
-      <StyledSummary isActive={isSummary}>
+      <StyledSummary isActive={activeQuestion === questionQuantity + 1}>
         <p>Średnia ocena nauczyciela w śród społeczności: </p>
         <p>Twoja średnia: {average}</p>
       </StyledSummary>
