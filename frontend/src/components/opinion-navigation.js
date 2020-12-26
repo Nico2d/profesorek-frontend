@@ -10,13 +10,11 @@ const OpinionNavigation = ({
 }) => {
   let buttonDisable = watch(`answer_${activeQuestion}`) ? false : true
 
-  const [isSummary, setIsSummary] = useState(false)
   const [average, setAverage] = useState(0)
 
   const handleSummaryButton = () => {
     let sum = 0
     setActiveQuestion(activeQuestion + 1)
-    setIsSummary(true)
 
     for (let i = 1; i <= questionQuantity; i++) {
       sum += parseInt(watch(`answer_${i}`))
@@ -26,10 +24,6 @@ const OpinionNavigation = ({
   }
 
   const handleBackButton = () => {
-    if (activeQuestion - 1 == questionQuantity) {
-      setIsSummary(false)
-    }
-
     setActiveQuestion(activeQuestion - 1)
   }
 
@@ -46,20 +40,30 @@ const OpinionNavigation = ({
       <StyledNav>
         <div>
           {activeQuestion !== 1 && (
-            <Button onClick={handleBackButton}>Wstecz</Button>
+            <Button type="button" onClick={handleBackButton}>
+              Wstecz
+            </Button>
           )}
         </div>
 
         {activeQuestion < questionQuantity ? (
-          <Button onClick={handleNextButton} isDisabled={buttonDisable}>
+          <Button
+            type="button"
+            onClick={handleNextButton}
+            disabled={buttonDisable}
+          >
             Dalej
           </Button>
         ) : activeQuestion !== questionQuantity + 1 ? (
-          <Button onClick={handleSummaryButton} isDisabled={buttonDisable}>
+          <Button
+            type="button"
+            onClick={handleSummaryButton}
+            disabled={buttonDisable}
+          >
             Podsumowanie
           </Button>
         ) : (
-          <Button>Dodaj</Button>
+          <Button type="submit">Dodaj</Button>
         )}
       </StyledNav>
     </>

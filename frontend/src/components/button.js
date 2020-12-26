@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 export const StyledButton = styled.button`
   background: ${props =>
-    props.isActive
+    props.disabled
       ? ({ theme }) => theme.disableColor
       : ({ theme }) => theme.primary};
   color: ${({ theme }) => theme.whiteToBlack};
@@ -13,7 +13,7 @@ export const StyledButton = styled.button`
   padding: 1rem 4rem;
   border: none;
   font-weight: bold;
-  cursor: ${props => (props.isActive ? "default" : "pointer")};
+  cursor: ${props => (props.disabled ? "default" : "pointer")};
 
   &:active,
   &:focus {
@@ -21,12 +21,8 @@ export const StyledButton = styled.button`
   }
 `
 
-const Button = ({ children, onClick, isDisabled = false }) => {
-  return (
-    <StyledButton onClick={onClick} disabled={isDisabled} isActive={isDisabled}>
-      {children}
-    </StyledButton>
-  )
+const Button = ({ children, ...rest }) => {
+  return <StyledButton {...rest}>{children}</StyledButton>
 }
 
 export default Button

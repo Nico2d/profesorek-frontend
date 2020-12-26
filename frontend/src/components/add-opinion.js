@@ -46,7 +46,6 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
       </StyledHeaderSection>
 
       {/* User Section */}
-
       <div>
         <OpinionAnswers
           userOpinions={getOpinions}
@@ -98,7 +97,7 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     "Prowadzący chętny do pomocy studenom",
   ]
 
-  const { register, reset, watch } = useForm()
+  const { register, reset, watch, handleSubmit } = useForm()
   const [currentQuestion, setCurrentQuestion] = useState(1)
 
   useEffect(() => {
@@ -120,8 +119,12 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     })
   }, [userOpinions, selectedCategory])
 
+  const onSubmit = () => {
+    console.log("wysylam dane tururur")
+  }
+
   return (
-    <div style={{ padding: "2rem" }}>
+    <form style={{ padding: "2rem" }} onSubmit={handleSubmit(onSubmit)}>
       {questionList.map((question, index) => (
         <StyledQuestionSection
           key={index}
@@ -141,7 +144,7 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
         questionQuantity={questionList.length}
         watch={watch}
       />
-    </div>
+    </form>
   )
 }
 
