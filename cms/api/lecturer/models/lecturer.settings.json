@@ -27,8 +27,8 @@
       "type": "string"
     },
     "opinions_categories": {
-      "collection": "opinions-category",
-      "via": "lecturer"
+      "via": "lecturer",
+      "collection": "opinions-category"
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "category_questions",
+  "info": {
+    "name": "Category_questions"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "CategoryType": {
+      "type": "string"
+    },
+    "questions_content": {
+      "type": "component",
+      "repeatable": false,
+      "component": "set-of-questions.set-of-questions"
+    },
+    "opinions_categories": {
+      "via": "category_question",
+      "collection": "opinions-category"
+    }
+  }
+}

@@ -98,26 +98,25 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     "Prowadzący chętny do pomocy studenom",
   ]
 
-  const { register, setValue, reset, watch } = useForm()
+  const { register, reset, watch } = useForm()
   const [currentQuestion, setCurrentQuestion] = useState(1)
 
   useEffect(() => {
     userOpinions.map(({ opinions_category, questions }) => {
+      let obj = {}
+
       if (opinions_category.category_name === selectedCategory) {
         questions.map(({ question_id, value }) => {
-          setValue(`${question_id}`, `${value}`, { shouldDirty: true })
+          obj[`${question_id}`] = `${value}`
         })
       } else {
-        reset({
-          answer_1: "",
-          answer_2: "",
-          answer_3: "",
-          answer_4: "",
-          answer_5: "",
-        })
-
         setCurrentQuestion(1)
+        questions.map(({ question_id }) => {
+          obj[`${question_id}`] = ``
+        })
       }
+
+      reset(obj)
     })
   }, [userOpinions, selectedCategory])
 

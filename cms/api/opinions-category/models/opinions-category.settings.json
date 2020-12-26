@@ -18,12 +18,19 @@
       "type": "string"
     },
     "opinions": {
-      "via": "opinions_category",
-      "collection": "opinions"
+      "collection": "opinions",
+      "via": "opinions_category"
     },
     "lecturer": {
-      "via": "opinions_categories",
-      "model": "lecturer"
+      "model": "lecturer",
+      "via": "opinions_categories"
+    },
+    "amount_opinions": {
+      "type": "integer"
+    },
+    "category_question": {
+      "model": "category-questions",
+      "via": "opinions_categories"
     }
   }
 }

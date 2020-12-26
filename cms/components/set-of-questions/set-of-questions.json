@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_set_of_questions_set_of_questions",
+  "info": {
+    "name": " set of questions",
+    "icon": "comment"
+  },
+  "options": {},
+  "attributes": {
+    "question_content": {
+      "type": "string"
+    }
+  }
+}
