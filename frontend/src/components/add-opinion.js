@@ -36,7 +36,6 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
 
   return (
     <div>
-      {/* Lecturer Section */}
       <StyledHeaderSection>
         <StyleTitle>{fullName}</StyleTitle>
         <CategorySelector
@@ -45,13 +44,11 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
         />
       </StyledHeaderSection>
 
-      {/* User Section */}
-      <div>
-        <OpinionAnswers
-          userOpinions={getOpinions}
-          selectedCategory={categoryName}
-        />
-      </div>
+      <OpinionAnswers
+        userOpinions={getOpinions}
+        selectedCategory={categoryName}
+        lecturerID={lecturerID}
+      />
     </div>
   )
 }
@@ -88,7 +85,7 @@ const CategorySelector = ({ lecturerCategories, getSelected }) => {
   )
 }
 
-const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
+const OpinionAnswers = ({ userOpinions, selectedCategory, lecturerID }) => {
   const questionList = [
     "Prowadzący miał dobry stosunek do studentów",
     "Prowadzący w jasny sposób przekazywał treść materiału",
@@ -119,8 +116,25 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     })
   }, [userOpinions, selectedCategory])
 
-  const onSubmit = () => {
-    console.log("wysylam dane tururur")
+  const onSubmit = data => {
+    let questions = []
+
+    Object.keys(data).map(answer => {
+      questions.push({
+        question_id: answer,
+        value: data[answer],
+      })
+    })
+
+    axios
+      .post("http://localhost:1337/opinions", {
+        opinions_category: [lecturerID],
+        users_permissions_user: [getUser().id],
+        questions: questions,
+      })
+      .then(response => {
+        console.log(response)
+      })
   }
 
   return (

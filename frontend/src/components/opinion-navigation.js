@@ -63,7 +63,7 @@ const OpinionNavigation = ({
             Podsumowanie
           </Button>
         ) : (
-          <Button type="submit">Dodaj</Button>
+          <Button as="input" type="submit" />
         )}
       </StyledNav>
     </>
