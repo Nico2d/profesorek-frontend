@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
-const Question = ({ label, inputRef, questionNumber }) => {
+const Question = ({ label, inputRef, questionNumber, ...res }) => {
   const questionValueString = [
     "zdecyfowanie nie",
     "raczej nie",
@@ -20,7 +20,7 @@ const Question = ({ label, inputRef, questionNumber }) => {
               type="radio"
               value={index + 1}
               ref={inputRef}
-              name={`answer[${questionNumber + 1}]`}
+              name={`answer_${questionNumber + 1}`}
             />
             {valueString}
           </StyledLabel>

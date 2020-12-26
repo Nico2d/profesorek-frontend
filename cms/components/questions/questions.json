@@ -7,11 +7,12 @@
   },
   "options": {},
   "attributes": {
-    "question_number": {
-      "type": "integer"
-    },
     "value": {
       "type": "integer"
+    },
+    "question_id": {
+      "type": "string",
+      "required": true
     }
   }
 }

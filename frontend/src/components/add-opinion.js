@@ -98,34 +98,38 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
     "Prowadzący chętny do pomocy studenom",
   ]
 
-  const { register } = useForm()
+  const { register, setValue, reset } = useForm()
+
+  useEffect(() => {
+    userOpinions.map(({ opinions_category, questions }) => {
+      console.log(questions)
+      if (opinions_category.category_name === selectedCategory) {
+        questions.map(({ question_id, value }) => {
+          setValue(`${question_id}`, `${value}`, { shouldDirty: true })
+        })
+      } else {
+        reset({
+          answer_1: "",
+          answer_2: "",
+          answer_3: "",
+          answer_4: "",
+          answer_5: "",
+        })
+      }
+    })
+  }, [userOpinions, selectedCategory])
 
   return (
     <div>
-      {userOpinions.map(({ opinions_category, questions }) => {
-        if (opinions_category.category_name === selectedCategory) {
-          return questions.map(({ question_number, value }) => {
-            return (
-              <p key={question_number}>
-                {question_number}: {value}
-              </p>
-            )
-          })
-        } else {
-          return questionList.map((question, index) => (
-            <StyledQuestionSection
-              key={index}
-              isActive={true}
-            >
-              <Question
-                label={`${index + 1}. ${question}`}
-                inputRef={register()}
-                questionNumber={index}
-              />
-            </StyledQuestionSection>
-          ))
-        }
-      })}
+      {questionList.map((question, index) => (
+        <StyledQuestionSection key={index} isActive={true}>
+          <Question
+            label={`${index + 1}. ${question}`}
+            inputRef={register}
+            questionNumber={index}
+          />
+        </StyledQuestionSection>
+      ))}
     </div>
   )
 }
