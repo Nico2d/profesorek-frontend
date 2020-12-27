@@ -66,6 +66,7 @@ const Lecturer = data => {
               fullName={fullName}
               opinionCategories={data.data.opinions_categories}
               lecturerID={data.data.id}
+              opinion={data.data}
             />
           </Popup>
         </>

@@ -125,6 +125,7 @@ const GET_LECTURERS = gql`
       opinions_categories {
         category_name
         average_rating
+        id
       }
     }
   }

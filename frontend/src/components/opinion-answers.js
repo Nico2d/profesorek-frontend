@@ -6,7 +6,7 @@ import OpinionNavigation from "./opinion-navigation"
 import axios from "axios"
 import { getUser } from "../services/auth"
 
-const OpinionAnswers = ({ userOpinions, selectedCategory, lecturerID }) => {
+const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
   const questionList = [
     "Prowadzący miał dobry stosunek do studentów",
     "Prowadzący w jasny sposób przekazywał treść materiału",
@@ -22,17 +22,17 @@ const OpinionAnswers = ({ userOpinions, selectedCategory, lecturerID }) => {
     userOpinions.map(({ opinions_category, questions }) => {
       let obj = {}
 
-      if (opinions_category.category_name === selectedCategory) {
+      if (opinions_category.category_name === selectedCategory.category_name) {
         questions.map(({ question_id, value }) => {
           obj[`${question_id}`] = `${value}`
         })
       } else {
-        setCurrentQuestion(1)
         questions.map(({ question_id }) => {
           obj[`${question_id}`] = ``
         })
       }
 
+      setCurrentQuestion(1)
       reset(obj)
     })
   }, [userOpinions, selectedCategory])
@@ -49,7 +49,7 @@ const OpinionAnswers = ({ userOpinions, selectedCategory, lecturerID }) => {
 
     axios
       .post("http://localhost:1337/opinions", {
-        opinions_category: [lecturerID],
+        opinions_category: [selectedCategory.id],
         users_permissions_user: [getUser().id],
         questions: questions,
       })

@@ -7,10 +7,8 @@ import OpinionCategory from "./opinion-category"
 
 const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
   const [getOpinions, setOpinions] = useState([])
-  const [categoryName, setCategoryName] = useState(
-    opinionCategories.length > 0
-      ? opinionCategories[0].category_name
-      : opinionCategories
+  const [category, setCategory] = useState(
+    opinionCategories.length > 0 ? opinionCategories[0] : opinionCategories
   )
 
   useEffect(() => {
@@ -33,21 +31,22 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
       })
   }, [])
 
+  // a jak jak by stworzyc forma i  OpinionCategory było by oparte na ReactHookForm
+  // wtedy mógbym sobie wyciagnac to bez problemu za pomoca getValue,
+  // ale musialbym sie bawic w przekazywanie watch, getvalue i register :()
+  // Do rozwazanie i małej kalkulacji
+
   return (
     <div>
       <StyledHeaderSection>
         <StyleTitle>{fullName}</StyleTitle>
         <OpinionCategory
           lecturerCategories={opinionCategories}
-          getSelected={setCategoryName}
+          getSelected={setCategory}
         />
       </StyledHeaderSection>
 
-      <OpinionAnswers
-        userOpinions={getOpinions}
-        selectedCategory={categoryName}
-        lecturerID={lecturerID}
-      />
+      <OpinionAnswers userOpinions={getOpinions} selectedCategory={category} />
     </div>
   )
 }

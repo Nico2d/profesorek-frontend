@@ -2,14 +2,22 @@ import React from "react"
 import styled from "styled-components"
 
 const OpinionCategory = ({ lecturerCategories, getSelected }) => {
+  const getSelectedCategory = value => {
+    let selectedObj = lecturerCategories.filter(
+      item => item.category_name === value
+    )
+
+    getSelected(selectedObj[0])
+  }
+
   return (
     <>
       <StyledSelectWrapper>
         <p>Rodzaj zajęć: </p>
-        <StyledSelect onChange={e => getSelected(e.target.value)}>
+        <StyledSelect onChange={e => getSelectedCategory(e.target.value)}>
           {lecturerCategories.length > 0 ? (
-            lecturerCategories.map((category, index) => (
-              <option key={index} value={category.category_name}>
+            lecturerCategories.map(category => (
+              <option key={category.id} value={category.category_name}>
                 {category.category_name}
               </option>
             ))
