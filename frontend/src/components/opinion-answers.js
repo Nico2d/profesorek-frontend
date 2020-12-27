@@ -19,22 +19,26 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
   const [currentQuestion, setCurrentQuestion] = useState(1)
 
   useEffect(() => {
-    userOpinions.map(({ opinions_category, questions }) => {
-      let obj = {}
+    const categoryNameList = userOpinions.map(
+      ({ opinions_category }) => opinions_category.category_name
+    )
 
+    let obj = {}
+
+    userOpinions.map(({ opinions_category, questions }) => {
       if (opinions_category.category_name === selectedCategory.category_name) {
         questions.map(({ question_id, value }) => {
-          obj[`${question_id}`] = `${value}`
-        })
-      } else {
-        questions.map(({ question_id }) => {
-          obj[`${question_id}`] = ``
+          obj[`${question_id}`] = categoryNameList.includes(
+            selectedCategory.category_name
+          )
+            ? `${value}`
+            : ``
         })
       }
-
-      setCurrentQuestion(1)
-      reset(obj)
     })
+
+    setCurrentQuestion(1)
+    reset(obj)
   }, [userOpinions, selectedCategory])
 
   const onSubmit = data => {
