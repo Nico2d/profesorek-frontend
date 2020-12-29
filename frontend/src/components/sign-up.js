@@ -15,7 +15,7 @@ const SignUp = ({ toggleSign }) => {
         email: watch("email"),
         password: watch("password"),
       })
-      .then(response => {
+      .then(() => {
         console.log("Well done!")
       })
       .catch(error => {

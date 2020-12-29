@@ -12,7 +12,7 @@ export const setToken = token => {
 
 export const getToken = () => {
   if (typeof window !== `undefined`) {
-    window.localStorage.getItem("token")
+    return window.localStorage.getItem("token")
       ? window.localStorage.getItem("token")
       : null
   }
@@ -20,7 +20,7 @@ export const getToken = () => {
 
 export const getUser = () => {
   if (typeof window !== `undefined`) {
-    window.localStorage.getItem("user")
+    return window.localStorage.getItem("user")
       ? JSON.parse(window.localStorage.getItem("user"))
       : {}
   }
