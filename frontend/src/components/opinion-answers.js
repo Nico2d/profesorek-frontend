@@ -17,22 +17,25 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
 
   const { register, reset, watch, handleSubmit } = useForm()
   const [currentQuestion, setCurrentQuestion] = useState(1)
+  const [opinionId, setOpinionId] = useState(NaN)
 
   useEffect(() => {
+    let obj = {}
     const categoryNameList = userOpinions.map(
       ({ opinions_category }) => opinions_category.category_name
     )
 
-    let obj = {}
+    const isOpinionAlreadyRated = categoryNameList.includes(
+      selectedCategory.category_name
+    )
 
-    userOpinions.map(({ opinions_category, questions }) => {
+    !isOpinionAlreadyRated && setOpinionId(NaN)
+
+    userOpinions.map(({ opinions_category, questions, id }) => {
       if (opinions_category.category_name === selectedCategory.category_name) {
+        setOpinionId(id)
         questions.map(({ question_id, value }) => {
-          obj[`${question_id}`] = categoryNameList.includes(
-            selectedCategory.category_name
-          )
-            ? `${value}`
-            : ``
+          obj[`${question_id}`] = `${value}`
         })
       }
     })
@@ -51,15 +54,27 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
       })
     })
 
-    axios
-      .post("http://localhost:1337/opinions", {
-        opinions_category: [selectedCategory.id],
-        users_permissions_user: [getUser().id],
-        questions: questions,
-      })
-      .then(response => {
-        console.log(response)
-      })
+    if (isNaN(opinionId)) {
+      axios
+        .post("http://localhost:1337/opinions", {
+          opinions_category: [selectedCategory.id],
+          users_permissions_user: [getUser().id],
+          questions: questions,
+        })
+        .then(response => {
+          console.log(response)
+        })
+    } else {
+      axios
+        .put(`http://localhost:1337/opinions/${opinionId}`, {
+          opinions_category: [selectedCategory.id],
+          users_permissions_user: [getUser().id],
+          questions: questions,
+        })
+        .then(response => {
+          console.log(response)
+        })
+    }
   }
 
   return (
