@@ -67,6 +67,13 @@ const Catalog = () => {
                 return activeUniversityList.includes(item.UniversityName)
               })
               .filter(item => {
+                if (
+                  item.Name === null &&
+                  item.Surname === null &&
+                  item.Titles === null
+                )
+                  return false
+
                 return (
                   item.Name.toLowerCase().includes(search) ||
                   item.Surname.toLowerCase().includes(search) ||

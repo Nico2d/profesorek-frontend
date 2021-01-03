@@ -3,11 +3,10 @@ import styled from "styled-components"
 import { FaUserPlus } from "react-icons/fa"
 import Popup from "../components/popup"
 import FormInput from "../components/form-input"
-import { gql, useMutation } from "@apollo/client"
+import axios from "axios"
 
 const AddLecturer = ({ callback }) => {
   const [openPopup, isOpenPopup] = useState(false)
-  const [addData] = useMutation(ADD_DATA)
 
   const [titles, setTitles] = useState("")
   const [name, setName] = useState("")
@@ -18,15 +17,17 @@ const AddLecturer = ({ callback }) => {
   const onSubmitHandler = e => {
     e.preventDefault()
 
-    addData({
-      variables: {
-        titles: titles,
-        name: name,
-        surname: surname,
-        university: university,
-        faculty: universityFaculty,
-      },
-    })
+    axios
+      .post("http://localhost:1337/lecturers", {
+        Titles: titles,
+        Name: name,
+        Surname: surname,
+        UniversityName: university,
+        UniversityFaculty: universityFaculty,
+      })
+      .then(response => {
+        console.log(response)
+      })
 
     isOpenPopup(false)
 
@@ -55,37 +56,42 @@ const AddLecturer = ({ callback }) => {
           <form style={{ marginTop: "3rem" }} onSubmit={onSubmitHandler}>
             <StyledWrapper>
               <FormInput
-                value={titles}
-                onInput={setTitles}
+                defaultValue={titles}
+                onInput={e => setTitles(e.target.value)}
                 title="Tytuły naukowe"
                 width={200}
+                name="title"
               />
               <FormInput
-                value={name}
-                onInput={setName}
+                defaultValue={name}
+                onChange={e => setName(e.target.value)}
                 title="Imię"
                 width={250}
+                name="name"
               />
               <FormInput
-                value={surname}
-                onInput={setSurname}
+                defaultValue={surname}
+                onChange={e => setSurname(e.target.value)}
                 title="Naziwsko"
                 width={250}
+                name="surname"
               />
             </StyledWrapper>
 
             <StyledWrapper>
               <FormInput
-                value={university}
-                onInput={setUniversity}
+                defaultValue={university}
+                onChange={e => setUniversity(e.target.value)}
                 title="Uczelnia"
                 width={400}
+                name="university"
               />
               <FormInput
-                value={universityFaculty}
-                onInput={setUniversityFaculty}
+                defaultValue={universityFaculty}
+                onChange={e => setUniversityFaculty(e.target.value)}
                 title="Wydział"
                 width={300}
+                name="faculty"
               />
             </StyledWrapper>
 
@@ -135,35 +141,5 @@ const StyledButton = styled.input`
   &:active,
   &:focus {
     border: none;
-  }
-`
-
-const ADD_DATA = gql`
-  mutation AddTeacher(
-    $titles: String
-    $name: String
-    $surname: String
-    $university: String
-    $faculty: String
-  ) {
-    createLecturer(
-      input: {
-        data: {
-          Titles: $titles
-          Name: $name
-          Surname: $surname
-          UniversityName: $university
-          UniversityFaculty: $faculty
-        }
-      }
-    ) {
-      lecturer {
-        Titles
-        Name
-        Surname
-        UniversityName
-        UniversityFaculty
-      }
-    }
   }
 `

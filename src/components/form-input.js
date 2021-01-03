@@ -91,27 +91,10 @@ const StyledInput = styled.input`
   }
 `
 
-const FormInput = ({
-  inputRef,
-  inputChange,
-  title,
-  width,
-  type = "text",
-  name,
-}) => {
+const FormInput = ({ title, width, ...rest }) => {
   return (
     <StyledWrapper>
-      <StyledInput
-        type={type}
-        autoComplete="true"
-        required
-        width={width}
-        // onInput={e => onInput(e.target.value)}
-        aria-label={title}
-        ref={inputRef}
-        name={name}
-        onChange={inputChange}
-      />
+      <StyledInput width={width} {...rest} />
       <StyledHighlight></StyledHighlight>
       <StyledBar width={width}></StyledBar>
       <StyledLabel>{title}</StyledLabel>

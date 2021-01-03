@@ -31,11 +31,6 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
       })
   }, [])
 
-  // a jak jak by stworzyc forma i  OpinionCategory było by oparte na ReactHookForm
-  // wtedy mógbym sobie wyciagnac to bez problemu za pomoca getValue,
-  // ale musialbym sie bawic w przekazywanie watch, getvalue i register :()
-  // Do rozwazanie i małej kalkulacji
-
   return (
     <div>
       <StyledHeaderSection>
