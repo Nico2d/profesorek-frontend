@@ -91,10 +91,10 @@ const StyledInput = styled.input`
   }
 `
 
-const FormInput = ({ title, width, ...rest }) => {
+const FormInput = ({ title, width, inputRef, ...rest }) => {
   return (
     <StyledWrapper>
-      <StyledInput width={width} {...rest} />
+      <StyledInput ref={inputRef} width={width} {...rest} />
       <StyledHighlight></StyledHighlight>
       <StyledBar width={width}></StyledBar>
       <StyledLabel>{title}</StyledLabel>

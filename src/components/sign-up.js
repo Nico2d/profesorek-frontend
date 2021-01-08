@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import FormImput from "./form-input"
 import axios from "axios"
@@ -7,9 +7,18 @@ import Button from "../components/button"
 import { motion } from "framer-motion"
 
 const SignUp = ({ toggleSign }) => {
-  const { register, handleSubmit, watch, setError, errors } = useForm()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    errors,
+    clearErrors,
+  } = useForm()
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
 
-  const onSubmit = () => {
+  const onSubmitHandler = () => {
+    console.log("Rejestracja")
     axios
       .post("http://localhost:1337/auth/local/register", {
         username: watch("username"),
@@ -18,9 +27,14 @@ const SignUp = ({ toggleSign }) => {
       })
       .then(() => {
         console.log("Well done!")
+        setIsRegisterSuccess(true)
       })
       .catch(error => {
-        console.log(eval(JSON.stringify(error.response.request.responseText)))
+        setError("register", {
+          type: "manual",
+          message: JSON.parse(error.response.request.responseText).message[0]
+            .messages[0].message,
+        })
       })
   }
 
@@ -33,7 +47,7 @@ const SignUp = ({ toggleSign }) => {
     >
       <StyledHeader>Sign Up</StyledHeader>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmitHandler)}>
         <FormImput
           name="username"
           title="Nazwa użytkownika"
@@ -51,6 +65,9 @@ const SignUp = ({ toggleSign }) => {
           name="email"
           title="Twój mail studencki"
           width={336}
+          onChange={() => {
+            clearErrors("register")
+          }}
           inputRef={register({
             pattern: {
               value: /.+(@student).+/g,
@@ -69,9 +86,22 @@ const SignUp = ({ toggleSign }) => {
         {errors.email && (
           <StyledErrorMessege>{errors.email.message}</StyledErrorMessege>
         )}
+        {errors.register && (
+          <StyledErrorMessege>{errors.register.message}</StyledErrorMessege>
+        )}
+        {isRegisterSuccess && (
+          <StyledErrorMessege>
+            Gratulacje! Udało Ci się założyć nowe konto
+          </StyledErrorMessege>
+        )}
 
         <ButtonWrapper>
-          <Button>Załóż konto</Button>
+          <Button
+            as="input"
+            type="submit"
+            value="Załóż konto"
+            onClick={() => console.log("click")}
+          />
         </ButtonWrapper>
       </form>
 
