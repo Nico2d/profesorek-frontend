@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import Button from "../components/button"
 import { StyledLabel } from "../components/sidebar"
 import { setUser, setToken } from "../services/auth"
+import { motion } from "framer-motion"
 
 const SignIn = ({ toggleSign }) => {
   const { register, handleSubmit, watch, errors, setError } = useForm()
@@ -34,7 +35,12 @@ const SignIn = ({ toggleSign }) => {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper
+      as={motion.div}
+      initial={{ y: 400, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -400, opacity: 0 }}
+    >
       <StyledHeader>Sign In</StyledHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>

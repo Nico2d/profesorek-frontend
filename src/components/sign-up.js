@@ -4,6 +4,7 @@ import FormImput from "./form-input"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import Button from "../components/button"
+import { motion } from "framer-motion"
 
 const SignUp = ({ toggleSign }) => {
   const { register, handleSubmit, watch, setError, errors } = useForm()
@@ -24,7 +25,12 @@ const SignUp = ({ toggleSign }) => {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper
+      as={motion.div}
+      initial={{ y: 400, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -400, opacity: 0 }}
+    >
       <StyledHeader>Sign Up</StyledHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>

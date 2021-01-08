@@ -15,6 +15,7 @@ const IndexPage = () => {
     <Layout>
       <SEO title="Home" />
       <StyledWrapper>
+        {console.log("render index.js")}
         <StyleTitleWrapper>
           <h1>Pomoż sobie oraz innym studentom</h1>
           <LinkButton text={"Lista Prowadząch"} path="/catalog" />

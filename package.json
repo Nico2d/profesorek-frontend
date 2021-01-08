@@ -16,7 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.5",
     "babel-plugin-styled-components": "^1.11.1",
-    "framer-motion": "^2.9.4",
+    "framer-motion": "^2.9.5",
     "gatsby": "^2.25.3",
     "gatsby-plugin-apollo": "^3.0.2",
     "gatsby-plugin-styled-components": "^3.4.0",
