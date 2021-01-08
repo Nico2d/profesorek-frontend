@@ -12,7 +12,7 @@ const inputHighlighter = keyframes`
   }
 `
 const StyledLabel = styled.label`
-  color: #999;
+  color: #333;
   font-size: 18px;
   font-weight: normal;
   position: absolute;

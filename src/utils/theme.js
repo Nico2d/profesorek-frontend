@@ -2,7 +2,7 @@ export const lightTheme = {
   primary: "#18A0FB",
   primaryToWhite: "#18A0FB",
 
-  secondary: "#0AD3FF",
+  secondary: "#18A0FB",
   secondaryToGray: "#0AD3FF",
 
   whiteToBlack: "#FFFFFF",

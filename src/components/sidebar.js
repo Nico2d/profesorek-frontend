@@ -43,7 +43,7 @@ export const StyledLabel = styled.label`
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color: #aaa;
 
     &:after {
       content: "";
