@@ -13,7 +13,7 @@ const SignIn = ({ toggleSign }) => {
 
   const onSubmit = () => {
     axios
-      .post("http://localhost:1337/auth/local", {
+      .post("https://co-tam-profesorku-backend.herokuapp.com/auth/local", {
         identifier: watch("username"),
         password: watch("password"),
       })
@@ -21,7 +21,7 @@ const SignIn = ({ toggleSign }) => {
         console.log("Well done!")
         setUser(response.data.user)
         setToken(response.data.jwt)
-        window.location.href = "http://localhost:8000/catalog"
+        window.location.href = "/catalog"
       })
       .catch(error => {
         let json = JSON.parse(error.response.request.responseText)

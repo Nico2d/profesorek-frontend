@@ -56,7 +56,7 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
 
     if (isNaN(opinionId)) {
       axios
-        .post("http://localhost:1337/opinions", {
+        .post("https://co-tam-profesorku-backend.herokuapp.com/opinions", {
           opinions_category: [selectedCategory.id],
           users_permissions_user: [getUser().id],
           questions: questions,
@@ -66,7 +66,7 @@ const OpinionAnswers = ({ userOpinions, selectedCategory }) => {
         })
     } else {
       axios
-        .put(`http://localhost:1337/opinions/${opinionId}`, {
+        .put(`https://co-tam-profesorku-backend.herokuapp.com/opinions/${opinionId}`, {
           opinions_category: [selectedCategory.id],
           users_permissions_user: [getUser().id],
           questions: questions,

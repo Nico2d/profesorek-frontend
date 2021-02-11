@@ -13,8 +13,11 @@ module.exports = {
     {
       resolve: `gatsby-source-strapi`,
       options: {
-        apiURL: `http://localhost:1337`,
+        apiURL: process.env.DEPLOY_URL
+          ? "https://co-tam-profesorku-backend.herokuapp.com"
+          : "http://localhost:1337",
         contentTypes: [`lecturers`, "opinions"],
+        queryLimit: 1000,
       },
     },
     {

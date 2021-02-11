@@ -20,11 +20,14 @@ const SignUp = ({ toggleSign }) => {
   const onSubmitHandler = () => {
     console.log("Rejestracja")
     axios
-      .post("http://localhost:1337/auth/local/register", {
-        username: watch("username"),
-        email: watch("email"),
-        password: watch("password"),
-      })
+      .post(
+        "https://co-tam-profesorku-backend.herokuapp.com/auth/local/register",
+        {
+          username: watch("username"),
+          email: watch("email"),
+          password: watch("password"),
+        }
+      )
       .then(() => {
         console.log("Well done!")
         setIsRegisterSuccess(true)

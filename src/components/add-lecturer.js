@@ -18,7 +18,7 @@ const AddLecturer = ({ callback }) => {
     e.preventDefault()
 
     axios
-      .post("http://localhost:1337/lecturers", {
+      .post("https://co-tam-profesorku-backend.herokuapp.com/lecturers", {
         Titles: titles,
         Name: name,
         Surname: surname,

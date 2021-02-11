@@ -1,9 +1,9 @@
 import React from "react"
 import styled from "styled-components"
 
-const Question = ({ label, inputRef, questionNumber, ...res }) => {
+const Question = ({ label, inputRef, questionNumber }) => {
   const questionValueString = [
-    "zdecyfowanie nie",
+    "zdecydowanie nie",
     "raczej nie",
     "trudno powiedzieć",
     "raczej tak",

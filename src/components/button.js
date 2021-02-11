@@ -14,6 +14,7 @@ export const StyledButton = styled.button`
   border: none;
   font-weight: bold;
   cursor: ${props => (props.disabled ? "default" : "pointer")};
+  font-size: ${({ theme }) => theme.fontSize}px;
 
   &:active,
   &:focus {

@@ -13,7 +13,7 @@ const AddOpinion = ({ fullName, opinionCategories, lecturerID }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/opinions", {
+      .get("https://co-tam-profesorku-backend.herokuapp.com/opinions", {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
